@@ -1,11 +1,9 @@
 Lista de alunos (O sistema tem uma lista única de alunos, organizada por ordem alfabética)
 
-Sobre o cadastro de alunos: A estrutura é de uma lista encadeada simples, organizada por ordem alfabética, a lista deve englobar todos os alunos da universidade, identificados pelo código do curso (o curso deve ser válido).           
-(implementado)
+Sobre o cadastro de alunos: A estrutura é de uma lista encadeada simples, organizada por ordem alfabética, a lista deve englobar todos os alunos da universidade, identificados pelo código do curso (o curso deve ser válido). **(IMPLEMENTADO)**
 
 
-
-Sobre Cadastro de disciplinas: 
+Sobre Cadastro de disciplinas: **(IMPLEMENTADO)**
 
 
 A função deve perguntar o código do curso que deseja inserir a disciplina, percorrer a árvore de cursos e encontrar o curso, uma segunda chamada de preenchimento deve ocorrer, e inserir a disciplina na arvore especifica do curso. (A ordem é código da disciplina)
