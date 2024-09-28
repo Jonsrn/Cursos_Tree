@@ -110,6 +110,7 @@ int verificar_arv_Cursos(int codigo_curso, Arv_cursos *S, Arv_cursos **resultado
 void preencher_alunos(No_Aluno **R, Arv_cursos **S); 
 int criarNo_Aluno(info_Aluno *temp, No_Aluno **novo);
 int inserir_lista_alunos(No_Aluno **R, No_Aluno **novo); 
+int buscarAlunoPorMatricula(No_Aluno *lista, int matricula_aluno, No_Aluno **aluno_encontrado); 
 
 //Funções relacionadas a árvore de Disciplinas
 
@@ -117,7 +118,13 @@ void mensagens_cadastro_disciplina(int situacao);
 int criarNo_Disc(Inf_Disc *temp, Arv_disc **novo);   
 int inserirArvBB_Disc(Arv_disc **disciplinas, Arv_disc *novo);
 void preencherDisciplinas(Arv_cursos **S); 
+int verificar_disciplina(Arv_disc *disciplinas, int codigo_disciplina); 
 
+//Funções relacionadas a árvore de Matriculas 
+
+int criarNo_Mat(int codigo_disciplina, Arv_Mat_Disc **novo); 
+int inserirArvBB_Mat(Arv_Mat_Disc **matriculas, Arv_Mat_Disc *nova_matricula);
+void preencher_matriculas(No_Aluno **raiz, Arv_cursos *S);  
 
 
 

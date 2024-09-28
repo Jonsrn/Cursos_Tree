@@ -55,6 +55,24 @@ int inserirArvBB_Disc(Arv_disc **disciplinas, Arv_disc *novo) {
 }
 
 
+int verificar_disciplina(Arv_disc *disciplinas, int codigo_disciplina) {
+    int operacao = 0; // Inicializa a operação como "não encontrada"
+
+    if (disciplinas != NULL) {
+        // Verifica se o código da disciplina é igual ao do nó atual
+        if (disciplinas->info.codigo_disciplina == codigo_disciplina) {
+            operacao = 1; // Disciplina encontrada
+        } else if (codigo_disciplina < disciplinas->info.codigo_disciplina) {
+            // Recursivamente busca na subárvore esquerda
+            operacao = verificar_disciplina(disciplinas->esq, codigo_disciplina);
+        } else {
+            // Recursivamente busca na subárvore direita
+            operacao = verificar_disciplina(disciplinas->dir, codigo_disciplina);
+        }
+    }
+
+    return operacao; // Retorna 0 se não encontrou, ou 1 se encontrou
+}
 
 
  
