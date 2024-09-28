@@ -44,13 +44,20 @@ struct Arv_Matricula_na_Disciplina {
 };
 
 // O dado do aluno (que irá servir de info para uma lista encadeada, em ordem alfabética)
-typedef struct Aluno {
+typedef struct Info_Aluno {
     int matricula;
     char nome_do_aluno[100];
     int codigo_curso; 
     Arv_Not *notas;           // Ponteiro para a árvore de notas do aluno
     Arv_Mat_Disc *matriculas;  // Ponteiro para a árvore de matrículas do aluno
-} Aluno;
+} info_Aluno; 
+
+//lista do aluno
+typedef struct No_Aluno {
+    info_Aluno aluno;         // Informações do aluno
+    struct No_Aluno *prox;    // Ponteiro para o próximo nó da lista
+} No_Aluno;
+
 
 // Info da árvore de disciplinas (contém os dados da disciplina)
 typedef struct Info_Disciplinas {
@@ -58,7 +65,7 @@ typedef struct Info_Disciplinas {
    char nome_da_disciplina[100]; 
    int periodo; 
    int carga_horaria;  
-} Inf_Disc; 
+} Inf_Disc;  
 
 // Árvore de disciplinas
 struct Arv_disciplinas { 
@@ -81,6 +88,8 @@ struct Arvore_Cursos {
 };
 
 
+
+
 /*
 Lista de Alunos: Matricula do aluno, Nome do aluno, Código do Curso, árvore de Notas, árvore de 
 Matrícula, a lista deve ser organizada pela ordem de alfabética por nome do aluno.
@@ -90,13 +99,17 @@ Matrícula, a lista deve ser organizada pela ordem de alfabética por nome do al
 
 
 //Funções relacionadas ao Curso
-int criarNo(int codigo, const char *nome, int periodos, Arv_cursos **novo);  
+int criarNo_Cursos(int codigo, const char *nome, int periodos, Arv_cursos **novo);  
 int inserirArvBB_Cursos(Arv_cursos **R, Arv_cursos *No); 
 void preencher_cursos(Arv_cursos **R);  
 void imprimirArvBB_Cursos(Arv_cursos *R); 
+int verificar_arv_Cursos(int codigo_curso, Arv_cursos *S);
 
 
-
+//Funções relacionada a lista dos alunos 
+void preencher_alunos(No_Aluno **R, Arv_cursos **S); 
+int criarNo_Aluno(info_Aluno *temp, No_Aluno **novo);
+int inserir_lista_alunos(No_Aluno **R, No_Aluno **novo); 
 
 
 
