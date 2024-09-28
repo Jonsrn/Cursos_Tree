@@ -1,3 +1,5 @@
+Comando atual para a execução: gcc main.c universidade.h menus.c Arvore_cursos.c lista_alunos.c Arvore_Disciplinas.c Arvore_Matriculas.c -o meu_programa
+
 Lista de alunos (O sistema tem uma lista única de alunos, organizada por ordem alfabética)
 
 Sobre o cadastro de alunos: A estrutura é de uma lista encadeada simples, organizada por ordem alfabética, a lista deve englobar todos os alunos da universidade, identificados pelo código do curso (o curso deve ser válido). **(IMPLEMENTADO)**
