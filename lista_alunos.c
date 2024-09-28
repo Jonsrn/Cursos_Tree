@@ -3,16 +3,6 @@
 #include <string.h>
 #include "universidade.h"
 
-/*
-int criarNo_Aluno(info_Aluno **aluno) {
-    *aluno = (No_Aluno*)malloc(sizeof(No_Aluno));
-    if (*aluno != NULL) {
-        novo->aluno = aluno;
-        novo->prox = NULL;
-    }
-    return novo;
-}
-*/
 
 
 //Essa função aqui cria os nós da lista de alunos, ela é muito importante !!
@@ -91,3 +81,20 @@ int inserir_lista_alunos(No_Aluno **R, No_Aluno **novo) {
 }
 
 
+//Tem que ter uma função de busca e retorno de endereço. Pra servir como ponto de entrada pra inserções e retiradas nas sub-arvores de matriculas e notas. 
+
+int buscarAlunoPorMatricula(No_Aluno *lista, int matricula_aluno, No_Aluno **aluno_encontrado) {
+    int operacao = 0;  // Variável de controle, 0 para aluno não encontrado, 1 para encontrado
+
+    // Percorre a lista de alunos
+    while (lista != NULL) {
+        if (lista->aluno.matricula == matricula_aluno) {
+            *aluno_encontrado = lista;  // Atribui o endereço do nó do aluno encontrado
+            operacao = 1;  // Atualiza para indicar que o aluno foi encontrado
+            break;  // Sai do loop após encontrar o aluno
+        }
+        lista = lista->prox;  // Move para o próximo nó da lista
+    }
+
+    return operacao;  // Retorna 1 se o aluno foi encontrado, 0 caso contrário
+}
