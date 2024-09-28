@@ -94,6 +94,24 @@ void mensagens_cadastro_disciplina(int situacao){
     }
 }
 
+void mensagens_cadastro_matricula(int situacao){
+    if(situacao == 0){
+        printf("Disciplina matriculada com sucesso\n"); 
+    }
+    if(situacao == 1){
+        printf("A operação falhou porque o aluno não está na lista\n"); 
+    }
+    if(situacao == 2){
+        printf("A operação falhou porque a disciplina solicitada não está disponivel no curso\n"); 
+    }
+    if(situacao == 3){
+        printf("A operação falhou porque o Nó não foi alocado corretamente\n"); 
+    }
+    if(situacao == 4){
+        printf("A operação falhou poruque não foi possivel a inserção na árvore de matriculas"); 
+    }
+}
+
 
 //Função cujo objetivo é cadastrar o curso (a função em si de inserir está em Arvore_Cursos.c)
 void preencher_cursos(Arv_cursos **R){
@@ -254,7 +272,70 @@ void preencherDisciplinas(Arv_cursos **S){
 
     mensagens_cadastro_disciplina(situacao);   
   
+}
 
+void preencher_matriculas(No_Aluno **raiz, Arv_cursos *S){
+    int operacao, situacao, matricula_aluno, codigo_disciplina; 
+    operacao = 1; 
+    situacao = 0; 
+
+    printf("Digite a sua matricula: ");
+    scanf("%d", &matricula_aluno); 
+
+    No_Aluno *aluno_encontrado;
+    aluno_encontrado = NULL;  
+
+    // função pra verificar a lista de alunos (recuperando o endereço nó item lista)
+    // é preciso verificar se o aluno está matriculado 
+    operacao = buscarAlunoPorMatricula(*raiz, matricula_aluno, &aluno_encontrado); 
+
+    if(operacao == 1){
+        //pegando o numero do curso 
+        printf("Digite o codigo da Disciplina que deseja se matricular: "); 
+        scanf("%d", &codigo_disciplina); 
+
+        Arv_cursos *curso_encontrado;
+        curso_encontrado = NULL;  
+
+        // a primeira função vai procurar o curso, se tiver, vai guardar o endereço do mesmo. 
+        operacao = verificar_arv_Cursos(aluno_encontrado->aluno.codigo_curso, S, &curso_encontrado);         
+
+        //com o endereço do nó de cursos, agora só percorrer na subarvore de disciplinas, e confirmar que ela existe
+        operacao = verificar_disciplina(curso_encontrado->info.disciplinas, codigo_disciplina); 
+        if(operacao == 1){
+            //criar o No das matriculas 
+            Arv_Mat_Disc *nova_matricula;
+            nova_matricula = NULL;  
+            operacao = criarNo_Mat(codigo_disciplina, &nova_matricula);
+
+            if(operacao == 1){
+                  //Com tudo ok, basta inserir na arvore de Matriculas
+                  operacao = inserirArvBB_Mat(&aluno_encontrado->aluno.matriculas, nova_matricula);
+                  if(operacao == 0){
+                    //A operação falhou na Inserção na árvore de matriculas
+                    free(nova_matricula); 
+                    situacao = 4; 
+                  }
+            }else{
+                //A operação falhou porque o Nó não foi alocado corretamente
+                situacao = 3; 
+            }
+
+
+            
+        }else{
+            //A operação falhou porque a disciplina informada não existe no curso.  
+            situacao = 2; 
+        }
+
+
+
+    }else{
+        //A operação falhou porque o aluno não está na lista
+        situacao = 1; 
+    }  
+
+    mensagens_cadastro_matricula(situacao); 
 
 
 }
