@@ -46,6 +46,7 @@ void menu_excluir(){
     printf("0 - Sair\n");  
 }
 
+//isso aqui deve mudar
 void mensagens_tela_cadastro(int opcao, int resposta){
    if(opcao == 2){
        if(resposta == 1){
@@ -60,25 +61,41 @@ void mensagens_cadastro_aluno(int situacao){
    //situação 0 significa que a operação funcionou conforme esperado
    if(situacao == 0){
      
-      printf("Operação realizada com sucesso"); 
+      printf("Operação realizada com sucesso.\n"); 
     
    }
    if(situacao == 1){
-      printf("A operação falhou, pois houve falha na alocação da memória"); 
+      printf("A operação falhou, pois houve falha na alocação da memória.\n"); 
    }
    //situação 1 informa que a operação parou na inserção da matricula do aluno na lista 
    if(situacao == 2){ 
-      printf("A operação falhou porque já existe alguém com essa matricula ");
+      printf("A operação falhou porque já existe alguém com essa matricula.\n");
       
    }
    //Situação 2 informa que a operação parou na verificação da existencia do curso na arvore
    if(situacao == 3){
-      printf("A operação falhou porque nenhum curso correspondente ao digitado foi encontrado."); 
+      printf("A operação falhou porque nenhum curso correspondente ao digitado foi encontrado.\n"); 
    }
 }
 
+//mensagens de feedback sobre resultado da operação de inserção de disciplina em determinado curso.
+void mensagens_cadastro_disciplina(int situacao){
+    if(situacao == 0){
+       printf("Disciplina Cadastrada com Sucesso!\n"); 
+    }
+    if(situacao == 1){
+        printf("A operação falhou porque nenhum curso com esse codigo foi encontrado.\n"); 
+    }
+    if(situacao == 2){
+        printf("A operacao falhou porque o Nó não foi alocado corretamente.\n"); 
+    }
+    if(situacao == 3){
+        printf("A operação falhou porque um curso de mesmo codigo foi inserido anteriormente.\n");
+    }
+}
 
 
+//Função cujo objetivo é cadastrar o curso (a função em si de inserir está em Arvore_Cursos.c)
 void preencher_cursos(Arv_cursos **R){
     int operacao = 1; 
     char nome_curso[100]; 
@@ -106,10 +123,16 @@ void preencher_cursos(Arv_cursos **R){
     mensagens_tela_cadastro(2, operacao); 
 }
 
+
+//Função cujo objetivo é cadastrar os alunos (a função em si de inserir está em lista_alunos.c)
+
 void preencher_alunos(No_Aluno **R, Arv_cursos **S) {
     int operacao = 1; 
     info_Aluno temp; 
     int situacao = 0; // Variável para armazenar o status final da operação
+    //essa struct não será utilizada aqui, no entanto, ela é parametro pra função, por conta de ser a mesma funcionalidade 
+    Arv_cursos *curso_encontrado;
+    curso_encontrado = NULL; 
 
     // Temporário: A matrícula seria gerada automaticamente em vez de pedida ao usuário
     printf("Digite sua matricula: "); 
@@ -124,7 +147,7 @@ void preencher_alunos(No_Aluno **R, Arv_cursos **S) {
     scanf("%d", &temp.codigo_curso); 
 
     // Verificar se o curso existe na árvore de cursos
-    operacao = verificar_arv_Cursos(temp.codigo_curso, *S); 
+    operacao = verificar_arv_Cursos(temp.codigo_curso, *S, &curso_encontrado); 
     if (operacao == 1) {
         // Curso encontrado, prosseguir com a criação do nó do aluno
         No_Aluno *novo; 
@@ -147,8 +170,91 @@ void preencher_alunos(No_Aluno **R, Arv_cursos **S) {
         operacao = 0; 
         situacao = 3; // Define a situação como curso não encontrado
     }
-
+    
     // Exibir mensagem final de acordo com a situação
     mensagens_cadastro_aluno(situacao);
 }
  
+//Função cujo objetivo é cadastrar as Disciplinas dentro dos cursos (a função em si de inserir está em Arvore_Disciplinas.c)
+void preencherDisciplinas(Arv_cursos **S){
+    int codigo_curso, operacao, situacao, confirmacao;
+    operacao = 1;  
+    Arv_cursos *curso_encontrado; 
+    curso_encontrado = NULL;
+    situacao = 0; 
+    Inf_Disc temp; 
+
+
+    printf("Digite o Codigo do Curso que deseja inserir a Disciplina: "); 
+    scanf("%d", &codigo_curso); 
+
+    //a função deve ir na arvore de cursos digitada e trazer de volta o endereço do Nó, caso o encontre.
+    operacao = verificar_arv_Cursos(codigo_curso, *S, &curso_encontrado); 
+    if(operacao == 1){ 
+        //A operação até o momento é bem sucedida, já temos o endereço do nó, prosseguimos. 
+        //proximo passo é coletar as infos pra inserir na árvore de disciplinas
+        printf("Digite o codigo da Disciplina: "); 
+        scanf("%d",&temp.codigo_disciplina); 
+        while (getchar() != '\n'); // Limpa o buffer de entrada
+
+        printf("Digite o Nome da Disciplina: "); 
+        fgets(temp.nome_da_disciplina, 100, stdin);
+        temp.nome_da_disciplina[strcspn(temp.nome_da_disciplina, "\n")] = '\0';
+        confirmacao = 0; 
+        do{
+            printf("Digite a carga horaria da disciplina(30, 45, 60, 75, 90): ");
+            scanf("%d", &temp.carga_horaria); 
+            if(temp.carga_horaria == 30 || temp.carga_horaria == 45 || temp.carga_horaria == 60 || temp.carga_horaria == 75 || temp.carga_horaria == 90){
+                confirmacao = 1;
+            }else{
+                printf("O valor de carga horaria digitado não é válido, tente novamente"); 
+            }
+        }while(confirmacao == 0); 
+            
+        confirmacao = 0; 
+
+        do{
+           printf("Digite o periodo da Disciplina no Curso: "); 
+           scanf("%d", &temp.periodo); 
+           if(1 <= temp.periodo && temp.periodo <= curso_encontrado->info.qtdade_de_periodos){
+            confirmacao = 1; 
+           }else{
+            printf("O periodo digitado deve ser válido(maior do que 0 e menor/igual ao periodo máximo do curso)"); 
+           }
+
+        }while(confirmacao == 0);
+
+        Arv_disc *novo; 
+
+        operacao = criarNo_Disc(&temp, &novo); 
+
+        if(operacao == 1){
+           // com o nó criado corretamente 
+           // o último passo é tentar inserir na árvore de disciplinas
+           operacao = inserirArvBB_Disc(&curso_encontrado->info.disciplinas, novo); 
+
+           if(operacao == 0){
+              //A operação falhou porque um curso de mesmo codigo foi inserido anteriormente. 
+              free(novo); 
+              situacao = 3; 
+           }
+
+
+        }else{
+            //A operacao falhou porque o Nó não foi alocado corretamente
+            situacao = 2; 
+        } 
+
+
+    }else{
+        //A operação falhou porque nenhum curso com esse codigo foi encontrado
+        situacao = 1; 
+    }
+    
+
+    mensagens_cadastro_disciplina(situacao);   
+  
+
+
+
+}
