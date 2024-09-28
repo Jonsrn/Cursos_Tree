@@ -29,6 +29,9 @@ int main(){
                       preencherDisciplinas(&cursos); 
                       break;
                    case 4: 
+                      preencher_matriculas(&lista_alunos, cursos); 
+                      break; 
+                   case 5: 
                      //isso deve sair daqui, é temporario
                       imprimirArvBB_Cursos(cursos); 
                       break;     
