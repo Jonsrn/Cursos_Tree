@@ -103,13 +103,20 @@ int criarNo_Cursos(int codigo, const char *nome, int periodos, Arv_cursos **novo
 int inserirArvBB_Cursos(Arv_cursos **R, Arv_cursos *No); 
 void preencher_cursos(Arv_cursos **R);  
 void imprimirArvBB_Cursos(Arv_cursos *R); 
-int verificar_arv_Cursos(int codigo_curso, Arv_cursos *S);
+int verificar_arv_Cursos(int codigo_curso, Arv_cursos *S, Arv_cursos **resultado);
 
 
 //Funções relacionada a lista dos alunos 
 void preencher_alunos(No_Aluno **R, Arv_cursos **S); 
 int criarNo_Aluno(info_Aluno *temp, No_Aluno **novo);
 int inserir_lista_alunos(No_Aluno **R, No_Aluno **novo); 
+
+//Funções relacionadas a árvore de Disciplinas
+
+void mensagens_cadastro_disciplina(int situacao); 
+int criarNo_Disc(Inf_Disc *temp, Arv_disc **novo);   
+int inserirArvBB_Disc(Arv_disc **disciplinas, Arv_disc *novo);
+void preencherDisciplinas(Arv_cursos **S); 
 
 
 
