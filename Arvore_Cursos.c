@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include "universidade.h"
 
-//Criar nó da Arvore de Cursos
+//Criar nó da Arvore de Cursos 
+//Talvez eu substitua o parametro dessa função por uma unica struct
 
 int criarNo_Cursos(int codigo, const char *nome, int periodos, Arv_cursos **novo) {
     *novo = (Arv_cursos*)malloc(sizeof(Arv_cursos));  // Aloca memória para o novo nó
@@ -49,7 +50,7 @@ int inserirArvBB_Cursos(Arv_cursos **R, Arv_cursos *No) {
 }
 
 
-
+/*
 //Uma função genérica, pra confirmar a existencia de um curso com determinado valor. 
 int verificar_arv_Cursos(int codigo_curso, Arv_cursos *S) {
     int operacao = 0; // Inicialmente, assume que o curso não foi encontrado
@@ -66,6 +67,32 @@ int verificar_arv_Cursos(int codigo_curso, Arv_cursos *S) {
 
     return operacao; // Único ponto de retorno
 }
+
+*/
+
+int verificar_arv_Cursos(int codigo_curso, Arv_cursos *S, Arv_cursos **resultado) {
+    int operacao = 0; // Inicializa a operação como não encontrada
+
+    if (S != NULL) {
+        // Se o curso for encontrado
+        if (S->info.codigo_do_curso == codigo_curso) {
+            *resultado = S; // Armazena o endereço do nó encontrado
+            operacao = 1; // Atualiza a operação para encontrado
+        } else if (codigo_curso < S->info.codigo_do_curso) {
+            // Busca na subárvore esquerda
+            operacao = verificar_arv_Cursos(codigo_curso, S->esq, resultado);
+        } else {
+            // Busca na subárvore direita
+            operacao = verificar_arv_Cursos(codigo_curso, S->dir, resultado);
+        }
+    }    
+
+    return operacao; // Retorna o resultado da operação
+}
+
+
+
+
 
 
 
