@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include "universidade.h"
 
-int criarNo(int codigo, const char *nome, int periodos, Arv_cursos **novo) {
+//Criar nó da Arvore de Cursos
+
+int criarNo_Cursos(int codigo, const char *nome, int periodos, Arv_cursos **novo) {
     *novo = (Arv_cursos*)malloc(sizeof(Arv_cursos));  // Aloca memória para o novo nó
     int operacao = 1; 
 
@@ -46,6 +48,28 @@ int inserirArvBB_Cursos(Arv_cursos **R, Arv_cursos *No) {
     return inserir; 
 }
 
+
+
+//Uma função genérica, pra confirmar a existencia de um curso com determinado valor. 
+int verificar_arv_Cursos(int codigo_curso, Arv_cursos *S) {
+    int operacao = 0; // Inicialmente, assume que o curso não foi encontrado
+    
+    if (S != NULL) {
+        if (S->info.codigo_do_curso == codigo_curso) {
+            operacao = 1; // Curso encontrado
+        } else if (codigo_curso < S->info.codigo_do_curso) {
+            operacao = verificar_arv_Cursos(codigo_curso, S->esq); // Busca na subárvore esquerda
+        } else {
+            operacao = verificar_arv_Cursos(codigo_curso, S->dir); // Busca na subárvore direita
+        }
+    }
+
+    return operacao; // Único ponto de retorno
+}
+
+
+
+
 void imprimirArvBB_Cursos(Arv_cursos *R) {
     if (R != NULL) {
         // Visitar o subárvore esquerda
@@ -61,3 +85,5 @@ void imprimirArvBB_Cursos(Arv_cursos *R) {
         imprimirArvBB_Cursos(R->dir);
     }
 }
+
+
