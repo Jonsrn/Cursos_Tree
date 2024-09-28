@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "universidade.h"
 
 void menu_principal(){
@@ -53,10 +54,27 @@ void mensagens_tela_cadastro(int opcao, int resposta){
         printf("Falha na Inserção, o curso com esse código já existe"); 
        }
    }
+}
 
-
-
-
+void mensagens_cadastro_aluno(int situacao){
+   //situação 0 significa que a operação funcionou conforme esperado
+   if(situacao == 0){
+     
+      printf("Operação realizada com sucesso"); 
+    
+   }
+   if(situacao == 1){
+      printf("A operação falhou, pois houve falha na alocação da memória"); 
+   }
+   //situação 1 informa que a operação parou na inserção da matricula do aluno na lista 
+   if(situacao == 2){ 
+      printf("A operação falhou porque já existe alguém com essa matricula ");
+      
+   }
+   //Situação 2 informa que a operação parou na verificação da existencia do curso na arvore
+   if(situacao == 3){
+      printf("A operação falhou porque nenhum curso correspondente ao digitado foi encontrado."); 
+   }
 }
 
 
@@ -69,7 +87,8 @@ void preencher_cursos(Arv_cursos **R){
     Arv_cursos *no;
     no = NULL; 
     
-     
+
+    //adicionar uma logica pra verificar se o numero do curso não é negativo  
     printf("Digite o código do curso: "); 
     scanf("%d", &codigo_curso); 
     while (getchar() != '\n');
@@ -78,7 +97,7 @@ void preencher_cursos(Arv_cursos **R){
     printf("Digite a quantidade de periodos desse curso: "); 
     scanf("%d", &qtdade_periodos); 
     
-    operacao = criarNo(codigo_curso, nome_curso, qtdade_periodos, &no); 
+    operacao = criarNo_Cursos(codigo_curso, nome_curso, qtdade_periodos, &no); 
 
     if(operacao == 1){
         operacao =  inserirArvBB_Cursos(R, no); 
@@ -86,3 +105,50 @@ void preencher_cursos(Arv_cursos **R){
       
     mensagens_tela_cadastro(2, operacao); 
 }
+
+void preencher_alunos(No_Aluno **R, Arv_cursos **S) {
+    int operacao = 1; 
+    info_Aluno temp; 
+    int situacao = 0; // Variável para armazenar o status final da operação
+
+    // Temporário: A matrícula seria gerada automaticamente em vez de pedida ao usuário
+    printf("Digite sua matricula: "); 
+    scanf("%d", &temp.matricula);
+    while (getchar() != '\n'); // Limpa o buffer de entrada
+
+    printf("Digite seu Nome Completo: "); 
+    fgets(temp.nome_do_aluno, 100, stdin);
+    temp.nome_do_aluno[strcspn(temp.nome_do_aluno, "\n")] = '\0'; // Remove o '\n' do fgets
+
+    printf("Digite o codigo do curso: "); 
+    scanf("%d", &temp.codigo_curso); 
+
+    // Verificar se o curso existe na árvore de cursos
+    operacao = verificar_arv_Cursos(temp.codigo_curso, *S); 
+    if (operacao == 1) {
+        // Curso encontrado, prosseguir com a criação do nó do aluno
+        No_Aluno *novo; 
+
+        operacao = criarNo_Aluno(&temp, &novo); 
+        if (novo != NULL) {
+            // Inserir aluno na lista encadeada
+            operacao = inserir_lista_alunos(R, &novo); 
+            if (operacao == 0) {
+                // A operação falhou porque a matrícula já existe
+                free(novo); // Libera o nó criado
+                situacao = 2; // Define a situação como matrícula já existente
+            }
+        } else {
+            // Falha ao criar o nó do aluno
+            situacao = 1; // Define a situação como erro ao criar o nó
+        }
+    } else {
+        // Nenhum curso correspondente encontrado
+        operacao = 0; 
+        situacao = 3; // Define a situação como curso não encontrado
+    }
+
+    // Exibir mensagem final de acordo com a situação
+    mensagens_cadastro_aluno(situacao);
+}
+ 
