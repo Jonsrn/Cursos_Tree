@@ -5,7 +5,7 @@
 void menu_principal(); 
 void menu_cadastrar();
 void menu_exibir();
-
+void menu_excluir(); 
 void mensagens_tela_cadastro(int opcao, int resposta); 
 
 
@@ -119,6 +119,13 @@ int criarNo_Disc(Inf_Disc *temp, Arv_disc **novo);
 int inserirArvBB_Disc(Arv_disc **disciplinas, Arv_disc *novo);
 void preencherDisciplinas(Arv_cursos **S); 
 int verificar_disciplina(Arv_disc *disciplinas, int codigo_disciplina); 
+void imprimirArvBB_Disciplinas(Arv_disc *R); 
+void imprimirArvBB_Disciplinas_periodo_especifico(Arv_disc *R, int periodo); 
+void mensagens_exibicao_disc(int situacao); 
+void exibir_disc_do_curso(Arv_cursos **S); 
+void exibir_disc_periodo_especifico(Arv_cursos **S);
+
+
 
 //Funções relacionadas a árvore de Matriculas 
 
@@ -127,6 +134,8 @@ int inserirArvBB_Mat(Arv_Mat_Disc **matriculas, Arv_Mat_Disc *nova_matricula);
 void preencher_matriculas(No_Aluno **raiz, Arv_cursos *S);  
 int menorFilho(Arv_Mat_Disc *R, Arv_Mat_Disc **menor); 
 int removeArvBB_Matriculas(Arv_Mat_Disc **R, int codigo_disciplina); 
+void mensagens_exclusao_matriculas(int situacao);
+void remover_Matricula(No_Aluno **raiz);  
 
 
 //Funções relacionadas a árvore de Notas
