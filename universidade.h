@@ -125,6 +125,16 @@ int verificar_disciplina(Arv_disc *disciplinas, int codigo_disciplina);
 int criarNo_Mat(int codigo_disciplina, Arv_Mat_Disc **novo); 
 int inserirArvBB_Mat(Arv_Mat_Disc **matriculas, Arv_Mat_Disc *nova_matricula);
 void preencher_matriculas(No_Aluno **raiz, Arv_cursos *S);  
+int menorFilho(Arv_Mat_Disc *R, Arv_Mat_Disc **menor); 
+int removeArvBB_Matriculas(Arv_Mat_Disc **R, int codigo_disciplina); 
+
+
+//Funções relacionadas a árvore de Notas
+
+void mensagens_cadastro_notas(int situacao); 
+int criarNo_Notas(Info_Notas temp, Arv_Not **novo); 
+int inserirArvBB_Notas(Arv_Not **notas, Arv_Not *novo); 
+void preencher_notas(No_Aluno **raiz); 
 
 
 

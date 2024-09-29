@@ -108,9 +108,27 @@ void mensagens_cadastro_matricula(int situacao){
         printf("A operação falhou porque o Nó não foi alocado corretamente\n"); 
     }
     if(situacao == 4){
-        printf("A operação falhou poruque não foi possivel a inserção na árvore de matriculas"); 
+        printf("A operação falhou poruque não foi possivel a inserção na árvore de matriculas\n"); 
     }
 }
+
+void mensagens_cadastro_notas(int situacao){
+    if(situacao == 0){
+        printf("Cadastro de Notas Efetuado com Sucesso\n"); 
+    }
+    if(situacao == 1){
+        printf("A operação falhou porque o aluno buscado não foi encontrado\n");
+    }
+    if(situacao == 2){
+        printf("A operação falhou porque a disciplina não foi encontrada ou a remoção falhou.\n"); 
+    }
+    if(situacao == 3){
+        printf("A operação falhou porque o nó de Notas não foi criado corretamente\n"); 
+    }
+    if(situacao == 4){
+        printf("A operação falhou porque a inserção não foi feita corretamente, o valor retirado da arvore de matriculas foi revertido\n"); 
+    }
+} 
 
 
 //Função cujo objetivo é cadastrar o curso (a função em si de inserir está em Arvore_Cursos.c)
@@ -336,6 +354,96 @@ void preencher_matriculas(No_Aluno **raiz, Arv_cursos *S){
     }  
 
     mensagens_cadastro_matricula(situacao); 
+
+
+}
+
+void preencher_notas(No_Aluno **raiz){ 
+    int operacao, situacao, matricula_aluno, codigo_disciplina; 
+    operacao = 1; 
+    situacao = 0; 
+
+    printf("Digite a sua matricula: ");
+    scanf("%d", &matricula_aluno); 
+
+    No_Aluno *aluno_encontrado;
+    aluno_encontrado = NULL;  
+
+    // função pra verificar a lista de alunos (recuperando o endereço nó item lista)
+    // é preciso verificar se o aluno está matriculado 
+    operacao = buscarAlunoPorMatricula(*raiz, matricula_aluno, &aluno_encontrado); 
+
+    if(operacao == 1){
+        printf("Digite o codigo da Disciplina que está matriculado: ");
+        scanf("%d", &codigo_disciplina); 
+         
+        //a função deve então remover o item da arvore de matriculas. (guarde uma cópia desse nó)
+        operacao = removeArvBB_Matriculas(&(aluno_encontrado->aluno.matriculas),codigo_disciplina);  
+
+
+        if(operacao == 1){
+            //O nó foi removido com sucesso, prosseguindo
+            //crie um nó de arvore de Notas
+            int confirmacao; 
+            confirmacao = 0; 
+            Arv_Not *novo_no; 
+            novo_no = NULL;
+
+            Info_Notas informacoes_do_aluno_disciplina;  
+            
+            do{
+                printf("Digite a nota final atingida na disciplina: "); 
+                scanf("%f", &informacoes_do_aluno_disciplina.nota_final); 
+                if(informacoes_do_aluno_disciplina.nota_final >= 0 && informacoes_do_aluno_disciplina.nota_final <= 10){
+                    confirmacao = 1; 
+                }else{
+                    printf("Nota digitada inválida, digite um valor entre 0 e 10\n"); 
+                    confirmacao = 0;
+                }
+            }while(confirmacao == 0); 
+
+            printf("Digite o semestre que você pagou essa disciplina: "); 
+            scanf("%d", &informacoes_do_aluno_disciplina.semestre_cursado); 
+
+            informacoes_do_aluno_disciplina.codigo_disciplina = codigo_disciplina;  
+
+            operacao = criarNo_Notas(informacoes_do_aluno_disciplina, &novo_no);     
+ 
+
+            if(operacao == 1){
+                // O nó foi criado corretamente, prosseguindo. 
+                operacao = inserirArvBB_Notas(&(aluno_encontrado->aluno.notas), novo_no); 
+                if(operacao != 1){
+                    Arv_Mat_Disc *nova_matricula;
+                    nova_matricula = NULL;
+                    criarNo_Mat(codigo_disciplina, &nova_matricula);
+                    inserirArvBB_Mat(&aluno_encontrado->aluno.matriculas, nova_matricula);
+                    //a inserção não foi feita corretamente, é necessário reverter. 
+                    situacao = 4;
+                }
+
+            }else{
+                //O nó não foi criado corretamente, é necessário reverter 
+                //usar a função de inserir(codigo_matricula); 
+                situacao = 3; 
+            } 
+
+
+        }else{
+            //A disciplina não foi encontrada ou a remoção falhou, operação abortada. 
+            situacao = 2;
+        } 
+
+
+
+
+    }else{
+        //A operação falhou porque o aluno buscado não foi encontrado
+        situacao = 1; 
+    }
+
+    mensagens_cadastro_notas(situacao); 
+
 
 
 }

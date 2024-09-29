@@ -32,6 +32,10 @@ int main(){
                       preencher_matriculas(&lista_alunos, cursos); 
                       break; 
                    case 5: 
+                      preencher_notas(&lista_alunos);
+                      break;
+                         
+                   case 6: 
                      //isso deve sair daqui, é temporario
                       imprimirArvBB_Cursos(cursos); 
                       break;     
@@ -71,4 +75,5 @@ int main(){
 
     return 0;
 }
+
 

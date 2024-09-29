@@ -75,5 +75,12 @@ int verificar_disciplina(Arv_disc *disciplinas, int codigo_disciplina) {
 }
 
 
+
+
+
+
+
+
+
  
 
