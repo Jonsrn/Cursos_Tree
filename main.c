@@ -3,7 +3,7 @@
 #include "universidade.h"
 
 int main(){
-    int op1, op2;
+    int op1, op2, op3, op4;
     Arv_cursos *cursos;  
     cursos = NULL; 
     No_Aluno *lista_alunos; 
@@ -33,12 +33,7 @@ int main(){
                       break; 
                    case 5: 
                       preencher_notas(&lista_alunos);
-                      break;
-                         
-                   case 6: 
-                     //isso deve sair daqui, é temporario
-                      imprimirArvBB_Cursos(cursos); 
-                      break;     
+                      break;      
                    default: 
                       break; 
 
@@ -58,12 +53,37 @@ int main(){
             break;
 
         case 2:
-            menu_exibir(); // Chamar o menu de exibição
-            // Você pode adicionar lógica adicional aqui
+            do{
+                menu_exibir();
+                scanf("%d", &op3); 
+                // Você pode adicionar lógica adicional aqui
+                switch(op3){
+                    case 2: 
+                        imprimirArvBB_Cursos(cursos); 
+                        break;
+                    case 3: 
+                    exibir_disc_do_curso(&cursos); 
+                    //exibir todas as disciplinas daquele curso
+                    break; 
+                    case 4: 
+                    exibir_disc_periodo_especifico(&cursos); 
+                    //vai exibir todas as disciplinas de um curso especifico em um periodo especifico
+                    break;   
+                }
+            }while(op3 != 0); 
             break;
+        case 3:
+            do{ 
+                menu_excluir(); 
+                scanf("%d", &op4); 
+                switch(op4){
 
-        case 3: 
-            // Outras opções, se necessário
+                case 2: 
+                   remover_Matricula(&lista_alunos);
+                   break;
+                }   
+            }while(op4 != 0); 
+
             break;        
         
         default:
@@ -75,5 +95,3 @@ int main(){
 
     return 0;
 }
-
-
