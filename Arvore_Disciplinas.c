@@ -75,6 +75,33 @@ int verificar_disciplina(Arv_disc *disciplinas, int codigo_disciplina) {
 }
 
 
+void imprimirArvBB_Disciplinas(Arv_disc *R) {
+    if (R != NULL) {
+        // Visitar o subárvore esquerda
+        imprimirArvBB_Disciplinas(R->esq);
+
+        // Imprimir o nó atual
+        printf("\nCódigo da Disciplina: %d\n Nome da Disciplina: %s\n Periodo na Grade: %d\nCarga Horaria: %d horas\n", R->info.codigo_disciplina, R->info.nome_da_disciplina, R->info.periodo, R->info.carga_horaria);
+
+        // Visitar o subárvore direita
+        imprimirArvBB_Disciplinas(R->dir);
+    }
+}
+
+
+void imprimirArvBB_Disciplinas_periodo_especifico(Arv_disc *R, int periodo) {
+    if (R != NULL) {
+        // Visitar o subárvore esquerda
+        imprimirArvBB_Disciplinas_periodo_especifico(R->esq, periodo);
+
+        // Imprimir o nó atual
+        if(R->info.periodo == periodo){ 
+          printf("\nCódigo da Disciplina: %d\n Nome da Disciplina: %s\n Periodo na Grade: %d\nCarga Horaria: %d horas\n", R->info.codigo_disciplina, R->info.nome_da_disciplina, R->info.periodo, R->info.carga_horaria);
+        }
+        // Visitar o subárvore direita
+        imprimirArvBB_Disciplinas_periodo_especifico(R->dir, periodo);
+    }
+}
 
 
 
