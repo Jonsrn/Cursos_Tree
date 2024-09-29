@@ -5,7 +5,7 @@
 
 void menu_principal(){
  
-    printf("Menu Principal\n"); 
+    printf("\nMenu Principal\n"); 
     printf("1- Menu Cadastrar\n"); 
     printf("2- Menu Exibir\n"); 
     printf("3- Menu Remover\n"); 
@@ -35,14 +35,14 @@ void menu_exibir(){
    printf("5 - Exibir Todas as Disciplinas que um determinado Aluno está Matriculado\n"); 
    printf("6 - Exibir todas as notas de disciplinas de um determinado período de um determinado aluno.\n"); 
    printf("7 - Exibir nota de uma disciplina de um determinado aluno, mostrando o período e a carga horária da disciplina.\n"); 
+   printf("8 - Mostrar o histórico de um determinado aluno, contendo o nome do curso, as disciplinas e sua respectiva nota organizadas pelo período que a disciplina está cadastrada no curso.\n");
    printf("0 - Sair\n"); 
 }
 
 void menu_excluir(){
     printf("Menu Remover\n"); 
     printf("1 - Remover uma Disciplina de um Determinado Curso\n");
-    printf("2 - Remover uma disciplina da árvore de matrícula de um determinado aluno."); 
-    printf("3 - Mostrar o histórico de um determinado aluno, contendo o nome do curso, as disciplinas e sua respectiva nota organizadas pelo período que a disciplina está cadastrada no curso.\n"); 
+    printf("2 - Remover uma disciplina da árvore de matrícula de um determinado aluno.\n"); 
     printf("0 - Sair\n");  
 }
 
@@ -127,6 +127,24 @@ void mensagens_cadastro_notas(int situacao){
     }
     if(situacao == 4){
         printf("A operação falhou porque a inserção não foi feita corretamente, o valor retirado da arvore de matriculas foi revertido\n"); 
+    }
+} 
+
+void mensagens_exibicao_disc(int situacao){
+    if(situacao == 1){
+        printf("Nenhum curso com o valor pesquisado foi encontrado.\n"); 
+    }
+}
+
+void mensagens_exclusao_matriculas(int situacao){
+    if(situacao == 0){
+        printf("Disciplina Excluída com sucesso\n"); 
+    }
+    if(situacao == 1){
+        printf("A operação falhou porque nenhum aluno foi encontrado"); 
+    }
+    if(situacao == 2){
+        printf("A operação falhou porque Nenhum curso com esse codigo foi encontrado\n"); 
     }
 } 
 
@@ -445,5 +463,116 @@ void preencher_notas(No_Aluno **raiz){
     mensagens_cadastro_notas(situacao); 
 
 
+
+}
+
+
+
+
+// Exibição agr
+
+
+void exibir_disc_do_curso(Arv_cursos **S){
+    Arv_cursos *curso_encontrado; 
+    curso_encontrado = NULL;
+
+
+    int codigo_curso, operacao, situacao;
+    situacao = 0; 
+
+    printf("\nDigite o codigo do curso: ");
+    scanf("%d",&codigo_curso);
+    operacao = verificar_arv_Cursos(codigo_curso,*S,&curso_encontrado);
+    if(operacao == 1){
+        imprimirArvBB_Disciplinas(curso_encontrado->info.disciplinas);
+
+    }else{
+        situacao = 1; 
+        //Nenhum curso foi encontrado
+        mensagens_exibicao_disc(situacao); 
+    }
+}
+
+void exibir_disc_periodo_especifico(Arv_cursos **S){
+    Arv_cursos *curso_encontrado; 
+    curso_encontrado = NULL; 
+
+    int codigo_curso, situacao, operacao;
+    operacao = 1; 
+    situacao = 0; 
+    int periodo;
+
+    printf("\nDigite o codigo do curso: ");
+    scanf("%d",&codigo_curso);
+
+    operacao = verificar_arv_Cursos(codigo_curso, *S, &curso_encontrado);
+
+    if(operacao == 1){
+        int confirmacao; 
+        confirmacao = 0; 
+
+        if(curso_encontrado->info.disciplinas != NULL){
+            do{
+                printf("\nDigite o periodo que deseja buscar: ");
+                scanf("%d",&periodo);
+
+                if(periodo <= 0 || periodo > curso_encontrado->info.qtdade_de_periodos){
+                    printf("O periodo buscado é inválido, digite novamente.\n"); 
+                }else{
+                    confirmacao = 1; 
+                }
+
+
+            }while(confirmacao == 0); 
+
+            imprimirArvBB_Disciplinas_periodo_especifico(curso_encontrado->info.disciplinas, periodo);
+        }
+    }
+    else
+    {
+        situacao = 1; 
+        mensagens_exibicao_disc(situacao);
+    }
+}
+
+//Funções relacionadas a remoção 
+
+
+
+void remover_Matricula(No_Aluno **raiz){
+    int operacao, situacao, matricula_aluno, codigo_disciplina; 
+    operacao = 1; 
+    situacao = 0; 
+
+    printf("Digite a sua matricula: ");
+    scanf("%d", &matricula_aluno); 
+
+    No_Aluno *aluno_encontrado;
+    aluno_encontrado = NULL;  
+
+    // função pra verificar a lista de alunos (recuperando o endereço nó item lista)
+    // é preciso verificar se o aluno está matriculado 
+    operacao = buscarAlunoPorMatricula(*raiz, matricula_aluno, &aluno_encontrado); 
+
+    if(operacao == 1){ 
+        printf("Digite o codigo da Disciplina que deseja excluir: ");
+        scanf("%d", &codigo_disciplina); 
+         
+        //a função deve então remover o item da arvore de matriculas. (guarde uma cópia desse nó)
+        operacao = removeArvBB_Matriculas(&(aluno_encontrado->aluno.matriculas),codigo_disciplina);
+
+        if(operacao != 1){
+            situacao = 2; 
+            //Falha na remoção, possivelmente a disciplina não existe. 
+        }
+
+
+
+    }else{
+        situacao = 1; 
+        //Não foi encontrado aluno com essa matricula
+    }
+
+    mensagens_exclusao_matriculas(situacao); 
 
 }
