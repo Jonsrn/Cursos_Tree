@@ -103,7 +103,7 @@ void imprimirArvBB_Cursos(Arv_cursos *R) {
         imprimirArvBB_Cursos(R->esq);
 
         // Imprimir o nó atual
-        printf("Código do Curso: %d, Nome do Curso: %s, Quantidade de Períodos: %d\n", 
+        printf("\nCódigo do Curso: %d\n Nome do Curso: %s\n Quantidade de Períodos: %d\n", 
                R->info.codigo_do_curso, 
                R->info.nome_do_curso, 
                R->info.qtdade_de_periodos);
