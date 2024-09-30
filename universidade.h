@@ -157,6 +157,9 @@ void mensagens_cadastro_notas(int situacao);
 int criarNo_Notas(Info_Notas temp, Arv_Not **novo); 
 int inserirArvBB_Notas(Arv_Not **notas, Arv_Not *novo); 
 void preencher_notas(No_Aluno **raiz); 
+void imprimir_notas_aluno_periodo(Arv_Not *notas, int periodo);
+void mensagens_busca_notas_periodo(int situacao);
+void exibir_notas_periodo(No_Aluno **raiz); 
 
 
 
