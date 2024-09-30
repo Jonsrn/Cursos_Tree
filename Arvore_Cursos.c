@@ -70,6 +70,8 @@ int verificar_arv_Cursos(int codigo_curso, Arv_cursos *S) {
 
 */
 
+
+//Essa função recupera o endereço do nó do curso pesquisado
 int verificar_arv_Cursos(int codigo_curso, Arv_cursos *S, Arv_cursos **resultado) {
     int operacao = 0; // Inicializa a operação como não encontrada
 
