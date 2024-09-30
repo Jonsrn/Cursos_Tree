@@ -111,6 +111,11 @@ void preencher_alunos(No_Aluno **R, Arv_cursos **S);
 int criarNo_Aluno(info_Aluno *temp, No_Aluno **novo);
 int inserir_lista_alunos(No_Aluno **R, No_Aluno **novo); 
 int buscarAlunoPorMatricula(No_Aluno *lista, int matricula_aluno, No_Aluno **aluno_encontrado); 
+void imprimir_alunos_do_curso(No_Aluno *lista, int codigo_curso); 
+void exibir_todos_alunos_curso(No_Aluno *raiz); 
+int verificar_aluno_com_disciplina(No_Aluno *lista, int codigo_curso, int codigo_disciplina); 
+
+
 
 //Funções relacionadas a árvore de Disciplinas
 
@@ -124,6 +129,11 @@ void imprimirArvBB_Disciplinas_periodo_especifico(Arv_disc *R, int periodo);
 void mensagens_exibicao_disc(int situacao); 
 void exibir_disc_do_curso(Arv_cursos **S); 
 void exibir_disc_periodo_especifico(Arv_cursos **S);
+void buscar_disciplina(Arv_disc *raiz, int codigo_disciplina, Arv_disc **disciplina_encontrada); 
+int menorFilho_Disc(Arv_disc *R, Arv_disc **menor); 
+int ArvBB_Disc_Remover(Arv_disc **R, int codigo_disciplina); 
+void remover_disc_curso(No_Aluno **raiz, Arv_cursos **R); 
+void mensagens_exclusao_disciplina(int situacao); 
 
 
 
@@ -136,6 +146,9 @@ int menorFilho(Arv_Mat_Disc *R, Arv_Mat_Disc **menor);
 int removeArvBB_Matriculas(Arv_Mat_Disc **R, int codigo_disciplina); 
 void mensagens_exclusao_matriculas(int situacao);
 void remover_Matricula(No_Aluno **raiz);  
+void exibir_disciplinas_matriculadas(Arv_Mat_Disc *raiz, Arv_disc *disciplinas); 
+void mostrar_todas_disc_aluno(No_Aluno **raiz, Arv_cursos **R); 
+int verificar_matricula_ARVMatricula(int codigo_disciplina, Arv_Mat_Disc *R); 
 
 
 //Funções relacionadas a árvore de Notas
