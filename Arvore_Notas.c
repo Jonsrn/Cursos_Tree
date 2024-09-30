@@ -43,3 +43,17 @@ int inserirArvBB_Notas(Arv_Not **notas, Arv_Not *novo){
 }
 
 
+//Função de imprimir 
+
+
+void imprimir_notas_aluno_periodo(Arv_Not *notas, int periodo){
+    if(notas != NULL){
+        imprimir_notas_aluno_periodo(notas->esq, periodo); 
+
+        if(notas->info.semestre_cursado == periodo){
+            printf("\nCodigo da Disciplina: %d\nNota Final: %.2f\nPeriodo Cursado: %d\n", notas->info.codigo_disciplina, notas->info.nota_final, notas->info.semestre_cursado); 
+        }
+
+        imprimir_notas_aluno_periodo(notas->dir, periodo); 
+    }
+}

@@ -77,6 +77,10 @@ int main(){
                         mostrar_todas_disc_aluno(&lista_alunos, &cursos); 
                         //vai exibir todas as disciplinas matriculadas pelo aluno
                         break;
+                    case 6: 
+                        exibir_notas_periodo(&lista_alunos); 
+                        //Essa função exibe as notas de um aluno especifico, em um periodo especifico
+                        break;   
                             
                 }
             }while(op3 != 0); 

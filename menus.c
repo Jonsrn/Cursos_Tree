@@ -169,6 +169,21 @@ void mensagens_exclusao_disciplina(int situacao){
     }
 } 
 
+void mensagens_busca_notas_periodo(int situacao){
+    if(situacao == 0){
+        printf("\nImpressão realizada com sucesso\n"); 
+    }
+    if(situacao == 1){
+        printf("\nA lista não possui alunos\n");
+    }
+    if(situacao == 2){
+        printf("\nO aluno com o valor pesquisado não foi encontrado\n"); 
+    }
+    if(situacao == 3){
+        printf("\nA arvore de notas é nula, portanto não há notas registradas pra esse aluno\n");
+    }
+}
+
 
 
 
@@ -623,10 +638,63 @@ void mostrar_todas_disc_aluno(No_Aluno **raiz, Arv_cursos **R){
     //falta colocar a função pra imprimir os status
 }
 
+//Mostrar todas as notas de disciplinas de um determinado período de um determinado aluno. 
+
+void exibir_notas_periodo(No_Aluno **raiz){
+    int situacao, operacao, matricula, periodo; 
+    situacao = 0; 
+    operacao = 1; 
+   
+   if(*raiz != NULL){
+        No_Aluno *aluno_encontrado; 
+        aluno_encontrado = NULL; 
+
+        //Com a certeza de que temos alunos cadastrados, proximo passo é pesquisar se o aluno está cadastrado
+
+        printf("Digite sua matricula: "); 
+        scanf("%d", &matricula); 
+
+        operacao = buscarAlunoPorMatricula(*raiz, matricula, &aluno_encontrado); 
+        if(operacao == 1){
+            //foi encontrado o aluno 
+            //Agore é verificar se arvore de notas desse aluno não é nula. 
+            if(aluno_encontrado->aluno.notas != NULL){
+                int cont; 
+                cont = 1; 
+                do{
+                   printf("\nDigite o periodo que deseja buscar: "); 
+                   scanf("%d", &periodo); 
+                   if(periodo < 1){
+                      printf("\nDigite um periodo válido\n"); 
+                   }else{
+                      cont = 0; 
+                   }
+                }while(cont == 1);   
+
+                imprimir_notas_aluno_periodo(aluno_encontrado->aluno.notas, periodo); 
+                
+            }else{
+                //A arvore de notas é nula, portanto não há o que pesquisar.
+                situacao = 3; 
+            }
+
+        }else{
+            //O aluno com o valor pesquisado não foi encontrado
+            situacao = 2; 
+        }
+     
+        
+
+   }else{
+      //A lista não possui alunos
+      situacao = 1; 
+   }
+
+   mensagens_busca_notas_periodo(situacao); 
 
 
 
-
+}
 
 
 //Funções relacionadas a remoção 
@@ -749,10 +817,4 @@ void remover_disc_curso(No_Aluno **raiz, Arv_cursos **R){
     }
 
     mensagens_exclusao_disciplina(situacao); 
- 
-
-
-
-
-
 }
