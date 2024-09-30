@@ -58,17 +58,26 @@ int main(){
                 scanf("%d", &op3); 
                 // Você pode adicionar lógica adicional aqui
                 switch(op3){
+                    case 1: 
+                        exibir_todos_alunos_curso(lista_alunos); 
+                        //exbir todos os alunos cadastrados naquele curso 
+                        break; 
                     case 2: 
                         imprimirArvBB_Cursos(cursos); 
                         break;
                     case 3: 
-                    exibir_disc_do_curso(&cursos); 
-                    //exibir todas as disciplinas daquele curso
-                    break; 
+                        exibir_disc_do_curso(&cursos); 
+                        //exibir todas as disciplinas daquele curso
+                        break; 
                     case 4: 
-                    exibir_disc_periodo_especifico(&cursos); 
-                    //vai exibir todas as disciplinas de um curso especifico em um periodo especifico
-                    break;   
+                        exibir_disc_periodo_especifico(&cursos); 
+                        //vai exibir todas as disciplinas de um curso especifico em um periodo especifico
+                        break;   
+                    case 5: 
+                        mostrar_todas_disc_aluno(&lista_alunos, &cursos); 
+                        //vai exibir todas as disciplinas matriculadas pelo aluno
+                        break;
+                            
                 }
             }while(op3 != 0); 
             break;
@@ -77,10 +86,13 @@ int main(){
                 menu_excluir(); 
                 scanf("%d", &op4); 
                 switch(op4){
-
-                case 2: 
-                   remover_Matricula(&lista_alunos);
-                   break;
+                   
+                   case 1: 
+                      remover_disc_curso(&lista_alunos, &cursos); 
+                      break; 
+                   case 2: 
+                      remover_Matricula(&lista_alunos);
+                      break;
                 }   
             }while(op4 != 0); 
 
@@ -95,3 +107,4 @@ int main(){
 
     return 0;
 }
+

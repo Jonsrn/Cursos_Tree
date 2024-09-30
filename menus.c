@@ -148,6 +148,37 @@ void mensagens_exclusao_matriculas(int situacao){
     }
 } 
 
+void mensagens_exclusao_disciplina(int situacao){
+    if(situacao == 0){
+        printf("Disciplina excluída com sucesso\n"); 
+    }
+    if(situacao == 1){
+        printf("É nula a árvore de cursos, não há cursos cadastrados no sistema\n"); 
+    }
+    if(situacao == 2){
+        printf("O curso buscado não foi encontrado.\n");
+    }
+    if(situacao == 3){
+        printf("A arvore de cursos do curso buscado é nula, não há disciplinas cadastradas aqui\n"); 
+    }
+    if(situacao == 4){
+        printf("Algum aluno possui essa disciplina matriculada, operação portanto cancelada\n"); 
+    }
+    if(situacao == 5){
+        printf("A operação de remoção da disciplina falhou, tente novamente\n"); 
+    }
+} 
+
+
+
+
+
+
+
+
+
+
+
 
 //Função cujo objetivo é cadastrar o curso (a função em si de inserir está em Arvore_Cursos.c)
 void preencher_cursos(Arv_cursos **R){
@@ -471,7 +502,26 @@ void preencher_notas(No_Aluno **raiz){
 
 // Exibição agr
 
+//Essa função exibe todos os alunos que estão vinculados a um determinado curso
+void exibir_todos_alunos_curso(No_Aluno *raiz){
+    int operacao, codigo_curso; 
+    
+    
+    if(raiz != NULL){
+        printf("\nDigite o codigo do curso: ");
+        scanf("%d", &codigo_curso); 
 
+        imprimir_alunos_do_curso(raiz, codigo_curso);  
+
+    }else{
+        //Não há nenhum aluno registrado no sistema
+        printf("\nNão há nenhum aluno registrado no sistema\n"); 
+    } 
+
+}
+
+
+//Essa função exibe as disciplinas vinculadas a determinado curso
 void exibir_disc_do_curso(Arv_cursos **S){
     Arv_cursos *curso_encontrado; 
     curso_encontrado = NULL;
@@ -493,6 +543,8 @@ void exibir_disc_do_curso(Arv_cursos **S){
     }
 }
 
+
+//Essa função exibe as disciplinas de um periodo especifico de um curso especifico
 void exibir_disc_periodo_especifico(Arv_cursos **S){
     Arv_cursos *curso_encontrado; 
     curso_encontrado = NULL; 
@@ -535,6 +587,48 @@ void exibir_disc_periodo_especifico(Arv_cursos **S){
     }
 }
 
+//Mostrar todas as disciplinas que o aluno está matriculado; 
+void mostrar_todas_disc_aluno(No_Aluno **raiz, Arv_cursos **R){
+    //primeiro passo é verificar se o aluno existe
+    int operacao, situacao, matricula_aluno; 
+    operacao = 1; 
+    situacao = 0;  
+    No_Aluno *aluno_encontrado; 
+    aluno_encontrado = NULL; 
+
+    printf("Digite a matricula do aluno: "); 
+    scanf("%d", &matricula_aluno); 
+
+    operacao = buscarAlunoPorMatricula(*raiz, matricula_aluno, &aluno_encontrado); 
+
+    if(operacao == 1){
+        Arv_cursos *curso_encontrado; 
+        curso_encontrado = NULL; 
+        //Proximo passo é recuperar o endereço do nó do curso
+        operacao = verificar_arv_Cursos(aluno_encontrado->aluno.codigo_curso, *R, &curso_encontrado); 
+        if(operacao == 1){ 
+            exibir_disciplinas_matriculadas(aluno_encontrado->aluno.matriculas, curso_encontrado->info.disciplinas); 
+
+        }else{
+            //A operação falhou porque não foi possivel recuperar o endereço da memória. 
+            situacao = 2; 
+        }
+
+
+    }else{
+        //A operação falhou porque não há nenhum aluno com a matricula pesquisada
+        situacao = 1;
+    }
+
+    //falta colocar a função pra imprimir os status
+}
+
+
+
+
+
+
+
 //Funções relacionadas a remoção 
 
 
@@ -574,5 +668,91 @@ void remover_Matricula(No_Aluno **raiz){
     }
 
     mensagens_exclusao_matriculas(situacao); 
+
+}
+
+//Remover uma disciplina de um determinado curso desde que não tenha nenhum aluno matriculado na mesma. 
+
+void remover_disc_curso(No_Aluno **raiz, Arv_cursos **R){
+    int operacao, situacao, codigo_curso, codigo_disciplina; 
+    operacao = 1; 
+    situacao = 0;  
+
+    if(R != NULL){
+
+        Arv_cursos *curso_encontrado; 
+        curso_encontrado = NULL; 
+
+        printf("Digite o codigo do curso: "); 
+        scanf("%d", &codigo_curso); 
+
+        operacao = verificar_arv_Cursos(codigo_curso, *R, &curso_encontrado); 
+
+        if(operacao == 1){ 
+            //curso encontrado, e já temos seu endereço. 
+             
+
+            if(curso_encontrado->info.disciplinas != NULL){
+
+                //Confirmado que existe uma árvore de disciplinas 
+                printf("Digite o codigo da disciplina: "); 
+                scanf("%d", &codigo_disciplina); 
+
+                if(raiz != NULL){
+                    //já que a lista de alunos é diferente de nula, é necessário verificar se há alguém vinculado a esse curso
+                    // e depois ver se esse aluno está com a disciplina mencionada em sua arvore 
+
+                    operacao = verificar_aluno_com_disciplina(*raiz, codigo_curso, codigo_disciplina); //isso aqui vai verificar na lista de alunos, se há alguem daquele curso
+                    // se tiver, ele olhará a arvore de matriculas em busca de algum achado; 
+                }
+
+                if(operacao != 1){
+                   //significa que nenhum aluno com essa credencial foi encontrada, dá pra prosseguir 
+
+                   //proximo passo é remover a disciplina 
+                   operacao = ArvBB_Disc_Remover(&(curso_encontrado->info.disciplinas), codigo_disciplina); 
+                   if(operacao != 1){
+                      situacao = 5; 
+                      //Não foi possivel remover essa disciplina, tente novamente (possivelmente a causa é essa disciplina n existir)
+                   }
+
+                }else{
+                    situacao = 4; 
+                    //algum aluno tem esse curso em sua grade, operação abortada
+                }
+
+
+
+
+
+
+            }else{
+                //A arvore de disciplinas desse curso é nula, portanto não há nada o que possa ser feito
+                situacao = 3;
+            }
+
+            
+           
+
+
+
+        }else{
+            situacao = 2; 
+            //curso não encontrado na arvore
+
+        }
+    
+
+    }else{
+        situacao = 1; 
+        //se for nulo a arvore de cursos, portanto não há o que ser feito
+    }
+
+    mensagens_exclusao_disciplina(situacao); 
+ 
+
+
+
+
 
 }

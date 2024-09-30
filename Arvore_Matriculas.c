@@ -45,6 +45,31 @@ int inserirArvBB_Mat(Arv_Mat_Disc **matriculas, Arv_Mat_Disc *nova_matricula) {
     return operacao; // Retorna 1 se inserido com sucesso, 0 se já existir
 }
 
+//Mostrar todas as disciplinas que um determinado aluno está matriculado 
+
+void exibir_disciplinas_matriculadas(Arv_Mat_Disc *raiz, Arv_disc *disciplinas) {
+    if (raiz != NULL) {
+        // Ir para a subárvore esquerda
+        exibir_disciplinas_matriculadas(raiz->esq, disciplinas);
+
+        // Buscar a disciplina correspondente ao código encontrado na árvore de matrículas
+        Arv_disc *disciplina_encontrada = NULL;
+        buscar_disciplina(disciplinas, raiz->codigo_disciplina, &disciplina_encontrada);
+
+        if (disciplina_encontrada != NULL) {
+            printf("\nCódigo da Disciplina: %d\nNome da Disciplina: %s\nPeriodo: %d\nCarga Horária: %d horas\n",
+                   disciplina_encontrada->info.codigo_disciplina,
+                   disciplina_encontrada->info.nome_da_disciplina,
+                   disciplina_encontrada->info.periodo,
+                   disciplina_encontrada->info.carga_horaria);
+        }
+
+        // Ir para a subárvore direita
+        exibir_disciplinas_matriculadas(raiz->dir, disciplinas);
+    }
+}
+
+
 
 
 //Funções de remover matricula
@@ -70,6 +95,7 @@ int menorFilho(Arv_Mat_Disc *R, Arv_Mat_Disc **menor) {
 }
 
 
+//Remove item da arvore de matriculas de um aluno
 
 int removeArvBB_Matriculas(Arv_Mat_Disc **R, int codigo_disciplina) {
     Arv_Mat_Disc *aux, *endFilho, *endMenorFilho;
@@ -119,4 +145,22 @@ int removeArvBB_Matriculas(Arv_Mat_Disc **R, int codigo_disciplina) {
     return operacao;  // Retorna 1 se a remoção foi bem-sucedida, 0 caso contrário
 }
 
+int verificar_matricula_ARVMatricula(int codigo_disciplina, Arv_Mat_Disc *R){
+   int operacao = 0; //Não encontrou nenhuma disciplina com esse codigo
 
+    if(R != NULL){    
+
+        if(R->codigo_disciplina == codigo_disciplina){
+            operacao = 1; 
+        } 
+        else if(codigo_disciplina < R->codigo_disciplina){
+            operacao = verificar_matricula_ARVMatricula(codigo_disciplina, R->esq); 
+        }
+        else if(codigo_disciplina > R->codigo_disciplina){
+                operacao = verificar_matricula_ARVMatricula(codigo_disciplina, R->dir);  
+        }
+    } 
+
+    return operacao; 
+
+}

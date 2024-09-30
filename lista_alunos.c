@@ -98,3 +98,39 @@ int buscarAlunoPorMatricula(No_Aluno *lista, int matricula_aluno, No_Aluno **alu
 
     return operacao;  // Retorna 1 se o aluno foi encontrado, 0 caso contrário
 }
+
+void imprimir_alunos_do_curso(No_Aluno *lista, int codigo_curso){
+    int cont; 
+    cont = 0; 
+    while(lista != NULL){
+        if(lista->aluno.codigo_curso == codigo_curso){
+            printf("\nMatricula: %d\nNome: %s\nCodigo Curso: %d\n", lista->aluno.matricula, lista->aluno.nome_do_aluno, lista->aluno.codigo_curso); 
+            cont++; 
+        }
+        lista = lista->prox; 
+
+    }
+    if(cont == 0){
+        printf("\nNenhum aluno no curso pesquisado foi encontrado\n"); 
+    }
+}
+
+int verificar_aluno_com_disciplina(No_Aluno *lista, int codigo_curso, int codigo_disciplina) {
+    int operacao = 0;  // Variável de controle, 0 para aluno não encontrado, 1 para encontrado
+
+    // Percorre a lista de alunos
+    while (lista != NULL) {
+        if (lista->aluno.codigo_curso == codigo_curso) {
+              if (lista->aluno.matriculas != NULL){
+                    operacao = verificar_matricula_ARVMatricula(codigo_disciplina, lista->aluno.matriculas);   // Atribui o endereço do nó do aluno encontrado
+                    // Atualiza para indicar que o aluno foi encontrado com essa matricula
+                    if(operacao == 1){
+                        break; 
+                    }   // Sai do loop após encontrar o aluno
+             }
+        }
+        lista = lista->prox;  // Move para o próximo nó da lista
+    }
+
+    return operacao;  // Retorna 1 se a disciplina foi encontrada, 0 caso contrário
+}
