@@ -99,6 +99,7 @@ int buscarAlunoPorMatricula(No_Aluno *lista, int matricula_aluno, No_Aluno **alu
     return operacao;  // Retorna 1 se o aluno foi encontrado, 0 caso contrário
 }
 
+//Imprime os alunos que estão vinculados a aquele curso
 void imprimir_alunos_do_curso(No_Aluno *lista, int codigo_curso){
     int cont; 
     cont = 0; 
@@ -115,6 +116,7 @@ void imprimir_alunos_do_curso(No_Aluno *lista, int codigo_curso){
     }
 }
 
+//Essa função serve pra verificar se tem algum aluno (de um curso) com a disciplina (pesquisada) matriculada
 int verificar_aluno_com_disciplina(No_Aluno *lista, int codigo_curso, int codigo_disciplina) {
     int operacao = 0;  // Variável de controle, 0 para aluno não encontrado, 1 para encontrado
 
