@@ -185,6 +185,22 @@ void mensagens_busca_notas_periodo(int situacao){
 }
 
 
+void mensagens_nota_disciplina_especifica(int situacao){
+    if(situacao == 0){
+        printf("\nOperação realizada com sucesso\n");
+    }
+    if(situacao == 1){
+        printf("\nNão há alunos matriculados no Campus\n"); 
+    }
+    if(situacao == 2){
+        printf("\nO aluno não foi encontrado\n"); 
+    }
+    if(situacao == 3){
+        printf("\nNão há notas registradas para esse aluno\n"); 
+    }
+}
+
+
 
 
 
@@ -695,6 +711,70 @@ void exibir_notas_periodo(No_Aluno **raiz){
 
 
 }
+
+// Mostrar a nota de uma disciplina de um determinado aluno, mostrando o período e a carga horária da disciplina. 
+
+void mostrar_nota_disciplina(No_Aluno **raiz){
+    //primeiramente, verificar se a lista não é nula, se for nula, não tem alunos, não há o que fazer
+    int situacao, operacao, matricula_aluno, codigo_disciplina; 
+    situacao = 0; 
+    operacao = 1; 
+
+    if(*raiz != NULL){
+        //Com a garantia de que há uma lista de alunos, é o momento de buscar a matricula do aluno
+        printf("Digite sua matricula: "); 
+        scanf("%d", &matricula_aluno);
+
+        No_Aluno *aluno_encontrado; 
+        aluno_encontrado = NULL; 
+
+        operacao = buscarAlunoPorMatricula(*raiz, matricula_aluno, &aluno_encontrado); 
+
+        if(operacao == 1){
+            //O aluno foi encontrado 
+            //proximo passo é verificar se a arvore de notas do mesmo não é nula. 
+            if(aluno_encontrado->aluno.notas != NULL){
+                //A Arvore de Notas não sendo nula, é a hora de pesquisar pelo codigo da disciplina. 
+                printf("Digite o codigo da Disciplina: "); 
+                scanf("%d", &codigo_disciplina); 
+
+                //vou só imprimir por enquanto, depois colocar uma mensagem, caso não tenha nenhuma matéria 
+                imprimir_nota_aluno_materia_especifica(aluno_encontrado->aluno.notas, codigo_disciplina);  
+
+
+            }else{
+                situacao = 3; 
+                //Não há notas registradas
+            }
+
+        }else{
+            situacao = 2; 
+            //O aluno não foi encontrado
+        } 
+
+
+
+    }else{
+        situacao = 1; 
+        //Não há alunos matriculados no Campus
+
+    }
+
+    mensagens_nota_disciplina_especifica(situacao); 
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
 
 
 //Funções relacionadas a remoção 
