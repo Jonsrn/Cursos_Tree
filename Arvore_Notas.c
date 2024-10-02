@@ -57,3 +57,17 @@ void imprimir_notas_aluno_periodo(Arv_Not *notas, int periodo){
         imprimir_notas_aluno_periodo(notas->dir, periodo); 
     }
 }
+
+//imprimir a nota do aluno baseada no codigo da disciplina
+void imprimir_nota_aluno_materia_especifica(Arv_Not *notas, int codigo_disciplina){
+    if(notas != NULL){
+        imprimir_nota_aluno_materia_especifica(notas->esq, codigo_disciplina); 
+
+        if(notas->info.codigo_disciplina == codigo_disciplina){
+            printf("\nCodigo da Disciplina: %d\nNota Final: %.2f\nPeriodo Cursado: %d\n", notas->info.codigo_disciplina, notas->info.nota_final, notas->info.semestre_cursado); 
+        }
+
+        imprimir_nota_aluno_materia_especifica(notas->dir, codigo_disciplina);
+    }
+
+}
