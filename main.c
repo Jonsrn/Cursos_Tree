@@ -81,6 +81,10 @@ int main(){
                         exibir_notas_periodo(&lista_alunos); 
                         //Essa função exibe as notas de um aluno especifico, em um periodo especifico
                         break;   
+                    case 7: 
+                        mostrar_nota_disciplina(&lista_alunos); 
+                        //Essa função exibe as notas de um aluno especifico, de uma matéria especifica
+                        break;     
                             
                 }
             }while(op3 != 0); 
