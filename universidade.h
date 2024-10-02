@@ -12,6 +12,7 @@ void mensagens_tela_cadastro(int opcao, int resposta);
 
 
 
+
 //estruturas 
 
 /*
@@ -160,6 +161,9 @@ void preencher_notas(No_Aluno **raiz);
 void imprimir_notas_aluno_periodo(Arv_Not *notas, int periodo);
 void mensagens_busca_notas_periodo(int situacao);
 void exibir_notas_periodo(No_Aluno **raiz); 
+void imprimir_nota_aluno_materia_especifica(Arv_Not *notas, int codigo_disciplina); 
+void mensagens_nota_disciplina_especifica(int situacao);
+void mostrar_nota_disciplina(No_Aluno **raiz); 
 
 
 
