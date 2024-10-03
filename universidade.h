@@ -135,6 +135,7 @@ int menorFilho_Disc(Arv_disc *R, Arv_disc **menor);
 int ArvBB_Disc_Remover(Arv_disc **R, int codigo_disciplina); 
 void remover_disc_curso(No_Aluno **raiz, Arv_cursos **R); 
 void mensagens_exclusao_disciplina(int situacao); 
+int armazenar_Nos_Arv_Disc(Arv_disc *R, Arv_disc ***vetor, int *tamanho); 
 
 
 
@@ -164,6 +165,12 @@ void exibir_notas_periodo(No_Aluno **raiz);
 void imprimir_nota_aluno_materia_especifica(Arv_Not *notas, int codigo_disciplina); 
 void mensagens_nota_disciplina_especifica(int situacao);
 void mostrar_nota_disciplina(No_Aluno **raiz); 
+int armazenar_Nos_Arv_Notas(Arv_Not *R, Arv_Not ***vetor, int *tamanho); 
+void imprimir_historico_Por_Periodo(Arv_disc **vetorDisc, int tamDisc, Arv_Not **vetorNotas, int tamNotas);   
+void ordenarDisciplinasPorPeriodo(Arv_disc **vetorDisc, int tamDisc); 
+void mensagens_historico_aluno(int situacao);
+void mostrar_historico_aluno(Arv_cursos **raiz, No_Aluno **S); 
+
 
 
 
