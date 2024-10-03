@@ -200,7 +200,32 @@ void mensagens_nota_disciplina_especifica(int situacao){
     }
 }
 
-
+void mensagens_historico_aluno(int situacao){
+    if(situacao == 0){
+        printf("\nOperação realizada com sucesso\n"); 
+    }
+    if(situacao == 1){
+        printf("\nA operação falhou, pois nenhum curso foi encontrado no sistema\n"); 
+    }
+    if(situacao == 2){
+        printf("\nA operação falhou, pois não há alunos cadastrados no sistema"); 
+    }
+    if(situacao == 3){
+        printf("\nA operação falhou, pois o aluno buscado não foi encontrado\n"); 
+    }
+    if(situacao == 4){
+        printf("\nA operação falhou, pois não há notas cadastradas pra esse aluno\n"); 
+    }
+    if(situacao == 5){
+        printf("\nA operação falhou, pois não há disciplinas cadastradas no momento, é necessário disciplinas cadastradas no curso\n"); 
+    }
+    if(situacao == 6){
+        printf("\nA operação falhou em recuperar os dados da árvore de disciplinas\n"); 
+    }
+    if(situacao == 7){
+        printf("\nA operação falhou em recuperar os dados da árvore de notas\n"); 
+    }
+}
 
 
 
@@ -249,6 +274,8 @@ void preencher_alunos(No_Aluno **R, Arv_cursos **S) {
     //essa struct não será utilizada aqui, no entanto, ela é parametro pra função, por conta de ser a mesma funcionalidade 
     Arv_cursos *curso_encontrado;
     curso_encontrado = NULL; 
+
+    //Colocar a VERIFICAÇÃO DE NULO AQUI
 
     // Temporário: A matrícula seria gerada automaticamente em vez de pedida ao usuário
     printf("Digite sua matricula: "); 
@@ -299,7 +326,8 @@ void preencherDisciplinas(Arv_cursos **S){
     curso_encontrado = NULL;
     situacao = 0; 
     Inf_Disc temp; 
-
+    
+    //Colocar verificação de NULO AQUI
 
     printf("Digite o Codigo do Curso que deseja inserir a Disciplina: "); 
     scanf("%d", &codigo_curso); 
@@ -377,6 +405,8 @@ void preencher_matriculas(No_Aluno **raiz, Arv_cursos *S){
     operacao = 1; 
     situacao = 0; 
 
+    //colocar Verificações de NULO AQUI
+
     printf("Digite a sua matricula: ");
     scanf("%d", &matricula_aluno); 
 
@@ -442,7 +472,9 @@ void preencher_notas(No_Aluno **raiz){
     int operacao, situacao, matricula_aluno, codigo_disciplina; 
     operacao = 1; 
     situacao = 0; 
+    
 
+    //Colocar uma VERIFICAÇÃO DE NULO AQUI
     printf("Digite a sua matricula: ");
     scanf("%d", &matricula_aluno); 
 
@@ -584,6 +616,8 @@ void exibir_disc_periodo_especifico(Arv_cursos **S){
     operacao = 1; 
     situacao = 0; 
     int periodo;
+    
+    //Adicionar uma VERIFICAÇÃO DE NULO AQUI
 
     printf("\nDigite o codigo do curso: ");
     scanf("%d",&codigo_curso);
@@ -626,6 +660,8 @@ void mostrar_todas_disc_aluno(No_Aluno **raiz, Arv_cursos **R){
     situacao = 0;  
     No_Aluno *aluno_encontrado; 
     aluno_encontrado = NULL; 
+
+    //Adicionar uma verificação de NULO AQUI
 
     printf("Digite a matricula do aluno: "); 
     scanf("%d", &matricula_aluno); 
@@ -769,8 +805,122 @@ void mostrar_nota_disciplina(No_Aluno **raiz){
 
 
 
+//Mostrar o histórico de um determinado aluno, contendo o nome do curso, as disciplinas e sua respectiva nota organizadas pelo período que a disciplina está cadastrada no curso. 
+
+void mostrar_historico_aluno(Arv_cursos **raiz, No_Aluno **S){
+    //primeiro iremos verificar se a arvore de cursos é nula
+    int situacao, operacao, matricula_aluno;
+    operacao = 1; 
+    situacao = 0;  
+    
+    
+    if(*raiz != NULL){
+        //Como há cursos cadastrados, podemos prosseguir
+        // proximo passo é verificar se há alunos cadastrados 
+        if(*S != NULL){
+            //Temos alunos, próximo passo é verificar se o aluno desejado está cadastrado
+            No_Aluno *aluno_encontrado; 
+            aluno_encontrado = NULL; 
+
+            printf("Digite sua matricula: "); 
+            scanf("%d", &matricula_aluno); 
+            
+            operacao = buscarAlunoPorMatricula(*S, matricula_aluno, &aluno_encontrado); 
+            if(operacao == 1){ 
+                //O aluno foi encontrado, agr teremos de verificar se sua árvore de notas não é nula
+                if(aluno_encontrado->aluno.notas != NULL){
+                    //A arvore de disciplinas não é nula, ultima verificação é olhar se a arvore de disciplinas do curso não é nula
+                    Arv_cursos *curso_encontrado; 
+                    curso_encontrado = NULL; 
+
+                    operacao = verificar_arv_Cursos(aluno_encontrado->aluno.codigo_curso, *raiz, &curso_encontrado); 
+                    //Como um aluno só pode se cadastrar em um curso que já existe, n é necessário verificar se o curso existe
+
+                    //vamos verificar se a árvore de disciplinas do curso não é nula. 
+
+                    if(curso_encontrado->info.disciplinas != NULL){
+                        //Com a garantia de que arvore de disciplinas não é nula, podemos percorrer a árvore e recuperar os valores que estão lá 
+
+                        Arv_disc **disciplinas_do_curso; 
+                        disciplinas_do_curso = NULL; 
+                        int tamanho_do_vetor_disc_curso; 
+                        tamanho_do_vetor_disc_curso = 0; 
+                        
+                        operacao = armazenar_Nos_Arv_Disc(curso_encontrado->info.disciplinas, &disciplinas_do_curso, &tamanho_do_vetor_disc_curso); 
+                        if(operacao == 1){
+                            //Blz, consegui um vetor com todas as disciplinas daquele curso
+                            //proximo passo é fazer o mesmo processo e recuperar a nota dos alunos na árvore  
+                            Arv_Not **disciplinas_pagas_do_aluno; 
+                            disciplinas_pagas_do_aluno = NULL; 
+                            int tamanho_do_vetor_notas; 
+                            tamanho_do_vetor_notas = 0; 
+
+                            operacao = armazenar_Nos_Arv_Notas(aluno_encontrado->aluno.notas, &disciplinas_pagas_do_aluno, &tamanho_do_vetor_notas); 
+                            if(operacao == 1){ 
+                                //Blz, já temos os dois vetores, com os nós das arvores, agr é mandar pra uma função auxiliar, de comparação, ordenação e impressão
+                                
+                                
+                                imprimir_historico_Por_Periodo(disciplinas_do_curso, tamanho_do_vetor_disc_curso, disciplinas_pagas_do_aluno, tamanho_do_vetor_notas); 
+
+                                //Libera a linkagem do vetor linear das notas do aluno, não afeta a árvore original;  
+                                free(disciplinas_pagas_do_aluno); 
+                                
 
 
+                            }else{
+                                situacao = 7; 
+                                //Não foi possivel recuperar os dados da árvore de notas do aluno; 
+                            }
+                            
+                            //libera a linkagem do vetor linear das disciplinas, mas não afeta a árvore original
+                            free(disciplinas_do_curso); 
+
+
+
+
+
+                        }else{
+                            situacao = 6; 
+                            //A operação falhou em recuperar os dados da árvore de disciplinas
+        
+                        }
+
+
+
+
+                    }else{
+                        situacao = 5; 
+                        //Não há disciplinas cadastradas nesse curso. 
+                    }
+                    
+
+
+
+                }else{
+                    situacao = 4; 
+                    //Não há notas cadastradas pra esse aluno. 
+                }
+
+            }else{
+                situacao = 3; 
+                //O aluno não foi encontrado
+            }
+
+
+        }else{
+            situacao = 2; 
+            //Não há alunos cadastrados no sistema
+        }
+
+    }else{
+       situacao = 1; 
+       //Nenhum curso cadastrado no sistema  
+    }
+
+    mensagens_historico_aluno(situacao); 
+
+
+}
 
 
 
