@@ -63,7 +63,8 @@ int main(){
                         //exbir todos os alunos cadastrados naquele curso 
                         break; 
                     case 2: 
-                        imprimirArvBB_Cursos(cursos); 
+                        exibir_todos_cursos(cursos);  
+                        //Tem que ter uma ponte aqui, estou chamando a função diretamente
                         break;
                     case 3: 
                         exibir_disc_do_curso(&cursos); 
