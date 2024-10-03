@@ -85,6 +85,10 @@ int main(){
                         mostrar_nota_disciplina(&lista_alunos); 
                         //Essa função exibe as notas de um aluno especifico, de uma matéria especifica
                         break;     
+                    case 8: 
+                        mostrar_historico_aluno(&cursos, &lista_alunos); 
+                        //Essa função vai exibir o historico do aluno, organizado pela ordem das disciplinas do curso; 
+                        break;     
                             
                 }
             }while(op3 != 0); 

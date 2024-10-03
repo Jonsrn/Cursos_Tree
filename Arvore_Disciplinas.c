@@ -133,6 +133,42 @@ void buscar_disciplina(Arv_disc *raiz, int codigo_disciplina, Arv_disc **discipl
     }
 }
 
+
+//Essa função percorrerá a arvore de disciplinas e armazenará em um vetor dinamico seus respectivos nós. 
+int armazenar_Nos_Arv_Disc(Arv_disc *R, Arv_disc ***vetor, int *tamanho) {
+    int operacao = 1; // Variável para controlar o sucesso ou falha da operação
+    
+    if (R != NULL) {
+        // Visita a subárvore à esquerda
+        operacao = armazenar_Nos_Arv_Disc(R->esq, vetor, tamanho);
+        
+        // Se houve erro na subárvore esquerda, interrompe a operação
+        if (operacao == 1) {
+            // Realoca o vetor para comportar mais um nó
+            *vetor = (Arv_disc **)realloc(*vetor, (*tamanho + 1) * sizeof(Arv_disc *));
+            if (*vetor == NULL) {
+                printf("\nErro na realocação do vetor\n");
+                operacao = 0; // Falha na realocação
+            } else {
+                // Armazena o endereço do nó no vetor
+                (*vetor)[*tamanho] = R;
+                (*tamanho)++; // Incrementa o tamanho para a próxima iteração
+
+                // Visita a subárvore à direita
+                operacao = armazenar_Nos_Arv_Disc(R->dir, vetor, tamanho);
+            }
+        }
+    }
+
+    return operacao; 
+}
+
+
+
+
+
+
+
 //Funções de remoção
 
 int menorFilho_Disc(Arv_disc *R, Arv_disc **menor) {
