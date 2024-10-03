@@ -6,7 +6,7 @@ void menu_principal();
 void menu_cadastrar();
 void menu_exibir();
 void menu_excluir(); 
-void mensagens_tela_cadastro(int opcao, int resposta); 
+void mensagens_tela_cadastro(int situacao); 
 
 
 
@@ -102,7 +102,9 @@ Matrícula, a lista deve ser organizada pela ordem de alfabética por nome do al
 //Funções relacionadas ao Curso
 int criarNo_Cursos(int codigo, const char *nome, int periodos, Arv_cursos **novo);  
 int inserirArvBB_Cursos(Arv_cursos **R, Arv_cursos *No); 
-void preencher_cursos(Arv_cursos **R);  
+void preencher_cursos(Arv_cursos **R); 
+void mensagens_exibicao_cursos(int situacao); 
+void exibir_todos_cursos(Arv_cursos *R); 
 void imprimirArvBB_Cursos(Arv_cursos *R); 
 int verificar_arv_Cursos(int codigo_curso, Arv_cursos *S, Arv_cursos **resultado);
 
@@ -150,6 +152,7 @@ void mensagens_exclusao_matriculas(int situacao);
 void remover_Matricula(No_Aluno **raiz);  
 void exibir_disciplinas_matriculadas(Arv_Mat_Disc *raiz, Arv_disc *disciplinas); 
 void mostrar_todas_disc_aluno(No_Aluno **raiz, Arv_cursos **R); 
+void mensagens_exibir_todas_disc_aluno(int situacao);
 int verificar_matricula_ARVMatricula(int codigo_disciplina, Arv_Mat_Disc *R); 
 
 
