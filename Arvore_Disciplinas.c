@@ -4,12 +4,13 @@
 #include "universidade.h"
 
 
-// criar uma função de criar No de Disciplina
-
-//Criar uma função na Árvore de Disciplinas
 
 
 
+
+
+//Essa função se refere ao Item III (Inserir Disciplina)
+//Ela cria um nó de uma árvore de disciplinas com as infos entregues
 int criarNo_Disc(Inf_Disc *temp, Arv_disc **novo){ 
     *novo = (Arv_disc*)malloc(sizeof(Arv_disc)); //Vai alocar a memória para o novo nó
     int operacao = 1; 
@@ -30,7 +31,8 @@ int criarNo_Disc(Inf_Disc *temp, Arv_disc **novo){
 }
 
 
-
+//Essa função se refere ao Item III(Inserir Disciplina)
+// Insere o nó criado na árvore de disciplinas, subordinada a árvore de cursos
 int inserirArvBB_Disc(Arv_disc **disciplinas, Arv_disc *novo) {
     int operacao = 1; // Assume que a operação será bem-sucedida
 
@@ -55,6 +57,9 @@ int inserirArvBB_Disc(Arv_disc **disciplinas, Arv_disc *novo) {
 }
 
 
+//Função referente ao Item IV (Inserir Matricula)
+//A função "verificar_disciplina" é chamada, para verificar se a disciplina realmente existe na árvore 
+
 int verificar_disciplina(Arv_disc *disciplinas, int codigo_disciplina) {
     int operacao = 0; // Inicializa a operação como "não encontrada"
 
@@ -74,7 +79,7 @@ int verificar_disciplina(Arv_disc *disciplinas, int codigo_disciplina) {
     return operacao; // Retorna 0 se não encontrou, ou 1 se encontrou
 }
 
-
+//Função referente ao item VIII (Imprimir todas as disciplinas daquele curso)
 void imprimirArvBB_Disciplinas(Arv_disc *R) {
     if (R != NULL) {
         // Visitar o subárvore esquerda
