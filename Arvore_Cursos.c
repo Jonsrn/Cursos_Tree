@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include "universidade.h"
 
-//Criar nó da Arvore de Cursos 
-//Talvez eu substitua o parametro dessa função por uma unica struct
 
+// Função referente ao Item II (Cadastrar Cursos)
+//Essa função cria um Nó na árvore de Cursos
 int criarNo_Cursos(int codigo, const char *nome, int periodos, Arv_cursos **novo) {
     *novo = (Arv_cursos*)malloc(sizeof(Arv_cursos));  // Aloca memória para o novo nó
     int operacao = 1; 
@@ -26,7 +26,8 @@ int criarNo_Cursos(int codigo, const char *nome, int periodos, Arv_cursos **novo
 
 
 
-
+// Função referente ao Item II (Cadastrar Cursos)
+//Essa função insere o nó criado na árvore de Cursos
 int inserirArvBB_Cursos(Arv_cursos **R, Arv_cursos *No) {
     int inserir = 1;
 
@@ -50,28 +51,9 @@ int inserirArvBB_Cursos(Arv_cursos **R, Arv_cursos *No) {
 }
 
 
-/*
-//Uma função genérica, pra confirmar a existencia de um curso com determinado valor. 
-int verificar_arv_Cursos(int codigo_curso, Arv_cursos *S) {
-    int operacao = 0; // Inicialmente, assume que o curso não foi encontrado
-    
-    if (S != NULL) {
-        if (S->info.codigo_do_curso == codigo_curso) {
-            operacao = 1; // Curso encontrado
-        } else if (codigo_curso < S->info.codigo_do_curso) {
-            operacao = verificar_arv_Cursos(codigo_curso, S->esq); // Busca na subárvore esquerda
-        } else {
-            operacao = verificar_arv_Cursos(codigo_curso, S->dir); // Busca na subárvore direita
-        }
-    }
-
-    return operacao; // Único ponto de retorno
-}
-
-*/
-
 
 //Essa função recupera o endereço do nó do curso pesquisado
+//Função utilizada em muitos itens (I, III, IV )
 int verificar_arv_Cursos(int codigo_curso, Arv_cursos *S, Arv_cursos **resultado) {
     int operacao = 0; // Inicializa a operação como não encontrada
 
@@ -97,8 +79,8 @@ int verificar_arv_Cursos(int codigo_curso, Arv_cursos *S, Arv_cursos **resultado
 
 
 
-
-
+//Função que imprime em ordem todos os cursos presentes na árvore
+//Essa função se refere ao Item VII (Imprimir todos os cursos)
 void imprimirArvBB_Cursos(Arv_cursos *R) {
     if (R != NULL) {
         // Visitar o subárvore esquerda

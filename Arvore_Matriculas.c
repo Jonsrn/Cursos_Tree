@@ -10,7 +10,8 @@
 
 
 
-
+//Essa função se refere ao item IV (Inserir Matriculas)
+//A função "criarNo_Mat" é chamada pra criar o Nó que será inserida na árvore de Matriculas
 int criarNo_Mat(int codigo_disciplina, Arv_Mat_Disc **novo){
    *novo = (Arv_Mat_Disc*)malloc(sizeof(Arv_Mat_Disc)); 
    int operacao = 1; 
@@ -25,6 +26,8 @@ int criarNo_Mat(int codigo_disciplina, Arv_Mat_Disc **novo){
    return operacao; 
 }
 
+// Essa função se refere ao item IV (Inserir Matriculas) (tbm pode ser utilizada no Item V)
+//A função "inserirArvBB_Mat" é chamada para inserir o nó na árvore de Matriculas
 int inserirArvBB_Mat(Arv_Mat_Disc **matriculas, Arv_Mat_Disc *nova_matricula) {
     int operacao = 1;
 
@@ -45,7 +48,7 @@ int inserirArvBB_Mat(Arv_Mat_Disc **matriculas, Arv_Mat_Disc *nova_matricula) {
     return operacao; // Retorna 1 se inserido com sucesso, 0 se já existir
 }
 
-//Mostrar todas as disciplinas que um determinado aluno está matriculado 
+//Mostrar todas as disciplinas que um determinado aluno está matriculado (tbm pode ser utilizada no Item V)
 
 void exibir_disciplinas_matriculadas(Arv_Mat_Disc *raiz, Arv_disc *disciplinas) {
     if (raiz != NULL) {
@@ -72,7 +75,9 @@ void exibir_disciplinas_matriculadas(Arv_Mat_Disc *raiz, Arv_disc *disciplinas) 
 
 
 
-//Funções de remover matricula
+//Funções de remover matricula 
+//Função auxiliar que cuida de encontrar menor Filho, pra efetuar a posterior remoção
+//Essa função é utilizada em multiplos Itens (V, )
 
 int menorFilho(Arv_Mat_Disc *R, Arv_Mat_Disc **menor) {
     // Inicialmente, assume que não encontrou
@@ -95,13 +100,12 @@ int menorFilho(Arv_Mat_Disc *R, Arv_Mat_Disc **menor) {
 }
 
 
-//Remove item da arvore de matriculas de um aluno
+//Remove o nó da arvore de matriculas de um aluno
+//Essa função é utilizda em multiplos itens (V, )
 
 int removeArvBB_Matriculas(Arv_Mat_Disc **R, int codigo_disciplina) {
     Arv_Mat_Disc *aux, *endFilho, *endMenorFilho;
-    int operacao = 1;  // Inicialmente, assume-se que a remoção teve sucesso
-
-    // Verifica se a árvore está vazia
+    int operacao = 1;  
     if (*R == NULL) {
         operacao = 0;  // Código da disciplina não encontrado
     } else {
@@ -146,7 +150,7 @@ int removeArvBB_Matriculas(Arv_Mat_Disc **R, int codigo_disciplina) {
 }
 
 int verificar_matricula_ARVMatricula(int codigo_disciplina, Arv_Mat_Disc *R){
-   int operacao = 0; //Não encontrou nenhuma disciplina com esse codigo
+   int operacao = 0; 
 
     if(R != NULL){    
 

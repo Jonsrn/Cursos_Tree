@@ -47,251 +47,93 @@ void menu_excluir(){
 }
 
 
-void mensagens_tela_cadastro(int situacao){
-   if(situacao == 0){
-        printf("\nCurso inserido com sucesso\n"); 
-   }
-   if(situacao == 1){
-     printf("\nA operação falhou porque houve uma falha na criação do Nó\n"); 
-   }  
-   if(situacao == 2){
-     printf("\nA operação falhou porque já existe um curso com esse código de curso\n"); 
-   }
-}
 
-void mensagens_cadastro_aluno(int situacao){
-   //situação 0 significa que a operação funcionou conforme esperado
-   if(situacao == 0){
-     
-      printf("\nOperação realizada com sucesso.\n"); 
+
+
+//Função cujo objetivo é cadastrar os alunos
+/*
+Essa função se refere ao Item I- Cadastrar alunos
+
+Passo 1 do Item I - É chamada a função "preencher_alunos", ela vai começar coletando os dados e intercambiando as funções
+
+Passo 2- É chamada a função "verificar_arv_Cursos", verificando se o curso informado realmente existe. (Arvore_Cursos.c)
+
+Passo 3- É chamada a função "CriarNo_Aluno", criando o nó com as informações referentes ao aluno (lista_alunos.c)
+
+Passo 4- É chamada a função "Inserir_lista_alunos", inserindo em ordem alfabetica na lista de alunos (lista_alunos.c)
+
+Passo 5- É chamada a função "mensagens_cadastro_aluno", apresentando uma mensagem correspondente ao status final da operação (mensagens.c)
+*/
+
+void preencher_alunos(No_Aluno **R, Arv_cursos **S) {
+    int operacao = 1;  
+    int situacao = 0; // Variável para armazenar o status final da operação
+    //essa struct não será utilizada aqui, no entanto, ela é parametro pra função, por conta de ser a mesma funcionalidade 
     
-   }
-   if(situacao == 1){
-      printf("\nA operação falhou, pois não há cadastros de cursos no sistema.\n"); 
-   }
-    
-   if(situacao == 2){ 
-      printf("\nA operação falhou porque o curso digitado não foi encontrado.\n");
-      
-   }
-   
-   if(situacao == 3){
-      printf("\nA operação falhou porque houve uma falha na criação do nó.\n"); 
-   }
-   if(situacao == 4){
-      printf("\nA operação falhou porque o número de matricula já existe\n"); 
-   }
+
+    //Colocar a VERIFICAÇÃO DE NULO AQUI(resolvido)
+        if(*S != NULL){
+            info_Aluno temp;
+            Arv_cursos *curso_encontrado;
+            curso_encontrado = NULL; 
+            // Temporário: A matrícula seria gerada automaticamente em vez de pedida ao usuário
+            printf("Digite sua matricula: "); 
+            scanf("%d", &temp.matricula);
+            while (getchar() != '\n'); // Limpa o buffer de entrada
+
+            printf("Digite seu Nome Completo: "); 
+            fgets(temp.nome_do_aluno, 100, stdin);
+            temp.nome_do_aluno[strcspn(temp.nome_do_aluno, "\n")] = '\0'; // Remove o '\n' do fgets
+
+            printf("Digite o codigo do curso: "); 
+            scanf("%d", &temp.codigo_curso); 
+
+            // Verificar se o curso existe na árvore de cursos
+            operacao = verificar_arv_Cursos(temp.codigo_curso, *S, &curso_encontrado); 
+            if (operacao == 1) {
+                // Curso encontrado, prosseguir com a criação do nó do aluno
+                No_Aluno *novo; 
+
+                operacao = criarNo_Aluno(&temp, &novo); 
+                if (novo != NULL) {
+                    // Inserir aluno na lista encadeada
+                    operacao = inserir_lista_alunos(R, &novo); 
+                    if (operacao == 0) {
+                        // A operação falhou porque a matrícula já existe
+                        free(novo); // Libera o nó criado
+                        situacao = 4; // Define a situação como matrícula já existente
+                    }
+                } else {
+                    // Falha ao criar o nó do aluno
+                    situacao = 3; // Define a situação como erro ao criar o nó
+                }
+            } else {
+                // Nenhum curso correspondente encontrado
+                operacao = 0; 
+                situacao = 2; // Define a situação como curso não encontrado
+            }
+        }else{
+            //Não há cursos cadastrados no sistema 
+            situacao = 1; 
+        }    
+            
+            // Exibir mensagem final de acordo com a situação
+            mensagens_cadastro_aluno(situacao);
 }
 
-//mensagens de feedback sobre resultado da operação de inserção de disciplina em determinado curso.
-void mensagens_cadastro_disciplina(int situacao){
-    if(situacao == 0){
-       printf("\nDisciplina Cadastrada com Sucesso!\n"); 
-    }
-    if(situacao == 1){
-        printf("\nA operação falhou porque não há cursos cadastrados no sistema\n"); 
-    }
-    if(situacao == 2){
-        printf("\nA operação falhou porque nenhum curso com esse codigo foi encontrado.\n"); 
-    }
-    if(situacao == 3){
-        printf("\nA operacao falhou porque o Nó não foi alocado corretamente.\n"); 
-    }
-    if(situacao == 4){
-        printf("\nA operação falhou porque um curso de mesmo codigo foi inserido anteriormente.\n");
-    }
-}
+//Função cujo objetivo é cadastrar o curso 
+/*
+Essa função se refere ao Item II- Cadastrar Cursos 
 
-void mensagens_cadastro_matricula(int situacao){
-    if(situacao == 0){
-        printf("\nDisciplina matriculada com sucesso\n"); 
-    }
-    if(situacao == 1){
-        printf("\nA operação falhou, porque não há cursos cadastrados no sistema\n"); 
-    }
-    if(situacao == 2){
-        printf("\nA operação falhou, porque não há alunos cadastrados no sistema\n"); 
-    }
-    if(situacao == 3){
-        printf("A operação falhou porque o aluno não está na lista\n"); 
-    }
-    if(situacao == 4){
-        printf("\nA operação falhou porque não há disciplinas cadastradas nesse curso\n"); 
-    }
-    if(situacao == 5){
-        printf("A operação falhou porque a disciplina solicitada não está disponivel no curso\n"); 
-    }
-    if(situacao == 6){
-        printf("A operação falhou porque o Nó não foi alocado corretamente\n"); 
-    }
-    if(situacao == 7){
-        printf("A operação falhou poruque não foi possivel a inserção na árvore de matriculas\n"); 
-    }
-}
+Passo 1 do Item II - É chamada a função "preencher_cursos", ela vai começar coletando os dados e intercambiando as funções
 
-void mensagens_cadastro_notas(int situacao){
-    if(situacao == 0){
-        printf("\nCadastro de Notas Efetuado com Sucesso\n"); 
-    }
-    if(situacao == 1){
-        printf("\nA operação falhou porque não há alunos cadastrados no sistema\n"); 
-    }
-    if(situacao == 2){
-        printf("A operação falhou porque o aluno buscado não foi encontrado\n");
-    }
-    if(situacao == 3){
-        printf("A operação falhou porque a disciplina não foi encontrada ou a remoção falhou.\n"); 
-    }
-    if(situacao == 4){
-        printf("A operação falhou porque o nó de Notas não foi criado corretamente\n"); 
-    }
-    if(situacao == 5){
-        printf("A operação falhou porque a inserção não foi feita corretamente, o valor retirado da arvore de matriculas foi revertido\n"); 
-    }
-} 
+Passo 2- É chamada a função "criarNo_Cursos", serve pra criar um nó com as infos coletadas do Curso (Arvore_Cursos.c)
 
-void mensagens_exibicao_cursos(int situacao){
-    if(situacao == 0){
-        printf("\nOperação realizada com sucesso\n"); 
-    }
-    if(situacao == 1){
-        printf("\nA operação falhou porque não há cursos cadastrados no sistema\n"); 
-    }
-}
+Passo 3- É chamada a função "inserirArvBB_Cursos", serve para inserir o Nó criado na árvore Cursos (Arvore_Cursos.c)
 
-void mensagens_exibicao_disc(int situacao){
-    if(situacao == 0){
-        printf("\nOperação realizada com sucesso.\n"); 
-    }    
-    if(situacao == 1){
-        printf("\nA operação falhou porque não há nenhum curso cadastrado no sistema\n"); 
-    }
-    if(situacao == 2){
-        printf("\nA operação falhou porque nenhum curso com o valor pesquisado foi encontrado.\n"); 
-    }
-    if(situacao == 3){
-        printf("\nA operação falhou porque o curso solicitado não possui disciplinas cadastradas\n"); 
-    }
-}
+Passo 4- É chamada a função "mensagens_tela_cadastro", serve para apresentar as mensagens de diagnostico da operação (mensagens.c)
 
-void mensagens_exibir_todas_disc_aluno(int situacao){
-    if(situacao == 0){
-        printf("\nA operação foi realizada com sucesso\n"); 
-    }
-    if(situacao == 1){
-        printf("\nA operação falhou porque não há cursos cadastrados no sistema\n"); 
-    }
-    if(situacao == 2){
-        printf("\nA operação falhou porque não há alunos cadastrados no sistema\n"); 
-    }
-    if(situacao == 3){
-        printf("\nA operação falhou porque não há nenhum aluno com a matricula pesquisada\n"); 
-    }
-    if(situacao == 4){
-        printf("\nA operação falhou porque não foi possivel recuperar o endereço da memória do Nó da Árvore de Cursos\n"); 
-    }
-    if(situacao == 5){
-       printf("\nA operação falhou porque a arvore de matriculas do aluno está vazia\n"); 
-    }
-}
-
-
-
-void mensagens_exclusao_matriculas(int situacao){
-    if(situacao == 0){
-        printf("Disciplina Excluída com sucesso\n"); 
-    }
-    if(situacao == 1){
-        printf("A operação falhou porque nenhum aluno foi encontrado"); 
-    }
-    if(situacao == 2){
-        printf("A operação falhou porque Nenhum curso com esse codigo foi encontrado\n"); 
-    }
-} 
-
-void mensagens_exclusao_disciplina(int situacao){
-    if(situacao == 0){
-        printf("Disciplina excluída com sucesso\n"); 
-    }
-    if(situacao == 1){
-        printf("É nula a árvore de cursos, não há cursos cadastrados no sistema\n"); 
-    }
-    if(situacao == 2){
-        printf("O curso buscado não foi encontrado.\n");
-    }
-    if(situacao == 3){
-        printf("A arvore de cursos do curso buscado é nula, não há disciplinas cadastradas aqui\n"); 
-    }
-    if(situacao == 4){
-        printf("Algum aluno possui essa disciplina matriculada, operação portanto cancelada\n"); 
-    }
-    if(situacao == 5){
-        printf("A operação de remoção da disciplina falhou, tente novamente\n"); 
-    }
-} 
-
-void mensagens_busca_notas_periodo(int situacao){
-    if(situacao == 0){
-        printf("\nImpressão realizada com sucesso\n"); 
-    }
-    if(situacao == 1){
-        printf("\nA lista não possui alunos\n");
-    }
-    if(situacao == 2){
-        printf("\nO aluno com o valor pesquisado não foi encontrado\n"); 
-    }
-    if(situacao == 3){
-        printf("\nA arvore de notas é nula, portanto não há notas registradas pra esse aluno\n");
-    }
-}
-
-
-void mensagens_nota_disciplina_especifica(int situacao){
-    if(situacao == 0){
-        printf("\nOperação realizada com sucesso\n");
-    }
-    if(situacao == 1){
-        printf("\nNão há alunos matriculados no Campus\n"); 
-    }
-    if(situacao == 2){
-        printf("\nO aluno não foi encontrado\n"); 
-    }
-    if(situacao == 3){
-        printf("\nNão há notas registradas para esse aluno\n"); 
-    }
-}
-
-void mensagens_historico_aluno(int situacao){
-    if(situacao == 0){
-        printf("\nOperação realizada com sucesso\n"); 
-    }
-    if(situacao == 1){
-        printf("\nA operação falhou, pois nenhum curso foi encontrado no sistema\n"); 
-    }
-    if(situacao == 2){
-        printf("\nA operação falhou, pois não há alunos cadastrados no sistema"); 
-    }
-    if(situacao == 3){
-        printf("\nA operação falhou, pois o aluno buscado não foi encontrado\n"); 
-    }
-    if(situacao == 4){
-        printf("\nA operação falhou, pois não há notas cadastradas pra esse aluno\n"); 
-    }
-    if(situacao == 5){
-        printf("\nA operação falhou, pois não há disciplinas cadastradas no momento, é necessário disciplinas cadastradas no curso\n"); 
-    }
-    if(situacao == 6){
-        printf("\nA operação falhou em recuperar os dados da árvore de disciplinas\n"); 
-    }
-    if(situacao == 7){
-        printf("\nA operação falhou em recuperar os dados da árvore de notas\n"); 
-    }
-}
-
-
-
-
-//Função cujo objetivo é cadastrar o curso (a função em si de inserir está em Arvore_Cursos.c)
+*/
 void preencher_cursos(Arv_cursos **R){
     int operacao, situacao, confirmacao;
     operacao = 1; 
@@ -355,66 +197,24 @@ void preencher_cursos(Arv_cursos **R){
     mensagens_tela_cadastro(situacao); 
 }
 
-
-//Função cujo objetivo é cadastrar os alunos (a função em si de inserir está em lista_alunos.c)
-
-void preencher_alunos(No_Aluno **R, Arv_cursos **S) {
-    int operacao = 1;  
-    int situacao = 0; // Variável para armazenar o status final da operação
-    //essa struct não será utilizada aqui, no entanto, ela é parametro pra função, por conta de ser a mesma funcionalidade 
-    
-
-    //Colocar a VERIFICAÇÃO DE NULO AQUI(resolvido)
-        if(*S != NULL){
-            info_Aluno temp;
-            Arv_cursos *curso_encontrado;
-            curso_encontrado = NULL; 
-            // Temporário: A matrícula seria gerada automaticamente em vez de pedida ao usuário
-            printf("Digite sua matricula: "); 
-            scanf("%d", &temp.matricula);
-            while (getchar() != '\n'); // Limpa o buffer de entrada
-
-            printf("Digite seu Nome Completo: "); 
-            fgets(temp.nome_do_aluno, 100, stdin);
-            temp.nome_do_aluno[strcspn(temp.nome_do_aluno, "\n")] = '\0'; // Remove o '\n' do fgets
-
-            printf("Digite o codigo do curso: "); 
-            scanf("%d", &temp.codigo_curso); 
-
-            // Verificar se o curso existe na árvore de cursos
-            operacao = verificar_arv_Cursos(temp.codigo_curso, *S, &curso_encontrado); 
-            if (operacao == 1) {
-                // Curso encontrado, prosseguir com a criação do nó do aluno
-                No_Aluno *novo; 
-
-                operacao = criarNo_Aluno(&temp, &novo); 
-                if (novo != NULL) {
-                    // Inserir aluno na lista encadeada
-                    operacao = inserir_lista_alunos(R, &novo); 
-                    if (operacao == 0) {
-                        // A operação falhou porque a matrícula já existe
-                        free(novo); // Libera o nó criado
-                        situacao = 4; // Define a situação como matrícula já existente
-                    }
-                } else {
-                    // Falha ao criar o nó do aluno
-                    situacao = 3; // Define a situação como erro ao criar o nó
-                }
-            } else {
-                // Nenhum curso correspondente encontrado
-                operacao = 0; 
-                situacao = 2; // Define a situação como curso não encontrado
-            }
-        }else{
-            //Não há cursos cadastrados no sistema 
-            situacao = 1; 
-        }    
-            
-            // Exibir mensagem final de acordo com a situação
-            mensagens_cadastro_aluno(situacao);
-}
  
 //Função cujo objetivo é cadastrar as Disciplinas dentro dos cursos (a função em si de inserir está em Arvore_Disciplinas.c)
+/*
+Essa função se refere ao Item III- Cadastrar Disciplinas
+
+Passo 1- É chamada a função "preencherDisciplinas", que lida com os intermédios e coletas de dados 
+
+Passo 2- É chamada a função "verificar_arv_Cursos", ela percorre a árvore de cursos, caso encontrando-a recupera o endereço do nó (Arvore_Cursos.c)
+
+Passo 3- É chamada a função "criarNo_Disc", ela cria o nó com as infos da disciplina, devolvendo o endereço do nó (Arvore_Disciplinas.c)
+
+Passo 4- É chamada a função "inserirArvBB_Disc", que insere o nó na árvore de disciplinas (Arvore_Disciplinas.c)
+
+Passo 5- É chamada a função "mensagens_cadastro_disciplina", que apresenta as mensagens referentes ao fim da operação (mensagens.c)
+
+
+
+*/
 void preencherDisciplinas(Arv_cursos **S){
     int codigo_curso, operacao, situacao, confirmacao;
     operacao = 1;  
@@ -500,6 +300,28 @@ void preencherDisciplinas(Arv_cursos **S){
     mensagens_cadastro_disciplina(situacao);   
   
 }
+
+//função cujo objetivo é cadastrar matriculas, coletando as infos e coordenando as funções subsequentes
+
+/*
+
+Essa função se refere ao item IV- (Cadastrar Matriculas)
+
+Passo 1- A função "preencher_matriculas" é acionada, pra coletar os dados referentes ao procedimento
+
+Passo 2- A função "buscarAlunoPorMatricula" é chamada, pra buscar o aluno, caso o encontre, recuperando o endereço de seu nó na lista (lista_alunos.c)
+
+Passo 3- A função "verificar_arv_Cursos" é chamada, para recuperar o endereço do nó da árvore de cursos (Arvore_Cursos.c)
+
+Passo 4- A função "verificar_disciplina" é chamada, para verificar se a disciplina realmente existe na árvore (Arvore_Disciplinas.c)
+
+Passo 5- A função "criarNo_Mat" é chamada pra criar o Nó que será inserida na árvore de Matriculas(Arvore_Matriculas.c)
+
+Passo 6- A função "inserirArvBB_Mat" é chamada para inserir o nó na árvore de Matriculas(Arvore_Matriculas.c)
+
+Passo 7- A função "mensagens_cadastro_matricula" é chamada pra exibir o status final da operação (mensagens.c)
+
+*/
 
 void preencher_matriculas(No_Aluno **raiz, Arv_cursos *S){
     int operacao, situacao, matricula_aluno, codigo_disciplina; 
@@ -589,6 +411,27 @@ void preencher_matriculas(No_Aluno **raiz, Arv_cursos *S){
 
 }
 
+//Função cujo objetivo é inserir as disciplinas com suas respectivas notas finais na árvore de Notas
+
+/*
+Essa função se refere ao Item V (Inserir Notas)(Pra que a inserção ocorra, o valor deve ser removido da árvore de matricula)
+
+Passo 1- A função "preencher_notas" é acionada, coletando os dados referentes ao procedimento 
+
+Passo 2- A função "buscarAlunoPorMatricula" é chamada, buscando o aluno na lista, recuperando o endereço de seu nó em caso de sucesso. (lista_alunos.c)
+
+Passo 3- A função "removeArvBB_Matriculas" é chamada pra procurar a matricula especifica na árvore de Matriculas, a removendo-a caso encontrando-a. (Arvore_Matriculas.c)
+
+Passo 4- A função "criarNo_Notas" é chamada pra criar um nó, a ser inserido na árvore de Notas(Arvore_Notas.c)
+
+Passo 5- A função "inserirArvBB_Notas" é chamada pra inserir o nó na árvore de Notas (Arvore_Notas.c)
+
+*Em caso de falha, a função cuida de criar um novo nó de matriculas e reinsere na árvore de matriculas
+
+Passo 6- A função "mensagens_cadastro_notas" serve para exibir o status final da operação (mensagens.c)
+
+*/
+
 void preencher_notas(No_Aluno **raiz){ 
     int operacao, situacao, matricula_aluno, codigo_disciplina; 
     operacao = 1; 
@@ -609,65 +452,73 @@ void preencher_notas(No_Aluno **raiz){
         operacao = buscarAlunoPorMatricula(*raiz, matricula_aluno, &aluno_encontrado); 
 
         if(operacao == 1){
-            printf("Digite o codigo da Disciplina que está matriculado: ");
-            scanf("%d", &codigo_disciplina); 
-            
-            //a função deve então remover o item da arvore de matriculas. (guarde uma cópia desse nó)
-            operacao = removeArvBB_Matriculas(&(aluno_encontrado->aluno.matriculas),codigo_disciplina);  
 
+            if(aluno_encontrado->aluno.matriculas != NULL){
 
-            if(operacao == 1){
-                //O nó foi removido com sucesso, prosseguindo
-                //crie um nó de arvore de Notas
-                int confirmacao; 
-                confirmacao = 0; 
-                Arv_Not *novo_no; 
-                novo_no = NULL;
-
-                Info_Notas informacoes_do_aluno_disciplina;  
                 
-                do{
-                    printf("Digite a nota final atingida na disciplina: "); 
-                    scanf("%f", &informacoes_do_aluno_disciplina.nota_final); 
-                    if(informacoes_do_aluno_disciplina.nota_final >= 0 && informacoes_do_aluno_disciplina.nota_final <= 10){
-                        confirmacao = 1; 
-                    }else{
-                        printf("Nota digitada inválida, digite um valor entre 0 e 10\n"); 
-                        confirmacao = 0;
-                    }
-                }while(confirmacao == 0); 
+                printf("Digite o codigo da Disciplina que está matriculado: ");
+                scanf("%d", &codigo_disciplina); 
+                
+                //a função deve então remover o item da arvore de matriculas. (guarde uma cópia desse nó)
+                operacao = removeArvBB_Matriculas(&(aluno_encontrado->aluno.matriculas),codigo_disciplina);  
 
-                printf("Digite o semestre que você pagou essa disciplina: "); 
-                scanf("%d", &informacoes_do_aluno_disciplina.semestre_cursado); 
-
-                informacoes_do_aluno_disciplina.codigo_disciplina = codigo_disciplina;  
-
-                operacao = criarNo_Notas(informacoes_do_aluno_disciplina, &novo_no);     
-    
 
                 if(operacao == 1){
-                    // O nó foi criado corretamente, prosseguindo. 
-                    operacao = inserirArvBB_Notas(&(aluno_encontrado->aluno.notas), novo_no); 
-                    if(operacao != 1){
-                        Arv_Mat_Disc *nova_matricula;
-                        nova_matricula = NULL;
-                        criarNo_Mat(codigo_disciplina, &nova_matricula);
-                        inserirArvBB_Mat(&aluno_encontrado->aluno.matriculas, nova_matricula);
-                        //a inserção na árvore de notas não foi feita corretamente, é necessário reverter. 
-                        situacao = 5;
-                    }
+                    //O nó foi removido com sucesso, prosseguindo
+                    //crie um nó de arvore de Notas
+                    int confirmacao; 
+                    confirmacao = 0; 
+                    Arv_Not *novo_no; 
+                    novo_no = NULL;
+
+                    Info_Notas informacoes_do_aluno_disciplina;  
+                    
+                    do{
+                        printf("Digite a nota final atingida na disciplina: "); 
+                        scanf("%f", &informacoes_do_aluno_disciplina.nota_final); 
+                        if(informacoes_do_aluno_disciplina.nota_final >= 0 && informacoes_do_aluno_disciplina.nota_final <= 10){
+                            confirmacao = 1; 
+                        }else{
+                            printf("Nota digitada inválida, digite um valor entre 0 e 10\n"); 
+                            confirmacao = 0;
+                        }
+                    }while(confirmacao == 0); 
+
+                    printf("Digite o semestre que você pagou essa disciplina: "); 
+                    scanf("%d", &informacoes_do_aluno_disciplina.semestre_cursado); 
+
+                    informacoes_do_aluno_disciplina.codigo_disciplina = codigo_disciplina;  
+
+                    operacao = criarNo_Notas(informacoes_do_aluno_disciplina, &novo_no);     
+        
+
+                    if(operacao == 1){
+                        // O nó foi criado corretamente, prosseguindo. 
+                        operacao = inserirArvBB_Notas(&(aluno_encontrado->aluno.notas), novo_no); 
+                        if(operacao != 1){
+                            Arv_Mat_Disc *nova_matricula;
+                            nova_matricula = NULL;
+                            criarNo_Mat(codigo_disciplina, &nova_matricula);
+                            inserirArvBB_Mat(&aluno_encontrado->aluno.matriculas, nova_matricula);
+                            //a inserção na árvore de notas não foi feita corretamente, é necessário reverter. 
+                            situacao = 6;
+                        }
+
+                    }else{
+                        //O nó não foi criado corretamente, é necessário reverter 
+                        //usar a função de inserir(codigo_matricula); 
+                        situacao = 5; 
+                    } 
+
 
                 }else{
-                    //O nó não foi criado corretamente, é necessário reverter 
-                    //usar a função de inserir(codigo_matricula); 
-                    situacao = 4; 
-                } 
-
-
+                    //A disciplina não foi encontrada ou a remoção falhou, operação abortada. 
+                    situacao = 4;
+                }
             }else{
-                //A disciplina não foi encontrada ou a remoção falhou, operação abortada. 
-                situacao = 3;
-            } 
+                //A operação falhou porque não há disciplinas matriculadas nesse aluno
+                situacao = 3; 
+            }     
 
 
 
@@ -693,9 +544,58 @@ void preencher_notas(No_Aluno **raiz){
 // Exibição agr
 
 
+//Essa função exibe todos os alunos que estão vinculados a um determinado curso
+/*Essa função cuida do Item VI - (Exibir todos os alunos matriculados naquele curso)
+
+Passo 1- A função "exibir_todos_alunos_curso" é chamada, pra coletar o valor a ser pesquisado
+Passo 2- A função "imprimir_alunos_do_curso" é chamada pra imprimir os alunos que correspondam ao valor pesquisado
+Passo 3- A função "mensagens_exibicao_alunos" é acionada pra exibir os status final da operação. 
+
+*/
+void exibir_todos_alunos_curso(No_Aluno *raiz, Arv_cursos *R){
+    int operacao, situacao, codigo_curso; 
+    situacao = 0; 
+
+    if(R != NULL){
+    
+        //NULO aqui tbm 
+        if(raiz != NULL){
+            printf("\nDigite o codigo do curso: ");
+            scanf("%d", &codigo_curso); 
+            Arv_cursos *curso_encontrado; 
+            curso_encontrado = NULL; 
+
+            operacao = verificar_arv_Cursos(codigo_curso, R, &curso_encontrado); 
+
+            if(operacao == 1){
+               imprimir_alunos_do_curso(raiz, codigo_curso);  
+            }else{
+                //Curso não encontrado
+                situacao = 3; 
+            }            
+
+        }else{
+            //Não há nenhum aluno registrado no sistema
+            situacao = 2; 
+        }
+    }else{
+        //Não há cursos cadastrados no sistema
+        situacao = 1; 
+    }
+    mensagens_exibicao_alunos(situacao);      
+
+}
+
+
 
 //Essa função cuida da exibição dos cursos no campus
 
+//Essa função cuida do Item VII(Imprimir todos os cursos cadastrados)
+/*
+Passo 1- A função "exibir_todos_cursos" é chamada, caso árvore de cursos não seja nulo, a operação prossegue
+Passo 2- A função "imprimirArvBB_Cursos" é chamada, exibindo em ordem todas os cursos na árvore (Arvore_Cursos.c)
+Passo 3- A função "mensagens_exibicao_cursos" é acionada pra reportar uma mensagem, caso nenhum curso esteja na árvore. (mensagens.c)
+*/
 void exibir_todos_cursos(Arv_cursos *R){
    int situacao;
    situacao = 0; 
@@ -712,26 +612,18 @@ void exibir_todos_cursos(Arv_cursos *R){
 
 }
 
-//Essa função exibe todos os alunos que estão vinculados a um determinado curso
-void exibir_todos_alunos_curso(No_Aluno *raiz){
-    int operacao, codigo_curso; 
-    
-    //NULO aqui tbm 
-    if(raiz != NULL){
-        printf("\nDigite o codigo do curso: ");
-        scanf("%d", &codigo_curso); 
 
-        imprimir_alunos_do_curso(raiz, codigo_curso);  
-
-    }else{
-        //Não há nenhum aluno registrado no sistema
-        printf("\nNão há nenhum aluno registrado no sistema\n"); 
-    } 
-
-}
 
 
 //Essa função exibe as disciplinas vinculadas a determinado curso
+/* Essa função se refere ao item VIII (Exibir todas as disciplinas de determinado curso)
+
+Passo 1- A função "verificar_arv_Cursos" vai verificar se o curso existe, recuperando o endereço de seu nó caso o encontre
+Passo 2- A função "imprimirArvBB_Disciplinas", percorre a arvore de disciplinas, subordinada ao nó de cursos, imprimindo suas disciplinas; 
+Passo 3- A função "mensagens_exibicao_disc", pra exibir o status final da operação 
+
+
+*/
 void exibir_disc_do_curso(Arv_cursos **S){
     Arv_cursos *curso_encontrado; 
     curso_encontrado = NULL;

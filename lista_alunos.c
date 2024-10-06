@@ -5,7 +5,9 @@
 
 
 
-//Essa função aqui cria os nós da lista de alunos, ela é muito importante !!
+//Essa função aqui cria os nós da lista de alunos
+
+//Essa função é requisito de uso do Item I- Cadastrar Alunos
 int criarNo_Aluno(info_Aluno *temp, No_Aluno **novo) {
     int operacao = 1; 
 
@@ -37,6 +39,7 @@ int criarNo_Aluno(info_Aluno *temp, No_Aluno **novo) {
 
 
 // Função para inserir em ordem alfabética
+//Essa função é requisito de uso do Item I- Cadastrar Alunos
 int inserir_lista_alunos(No_Aluno **R, No_Aluno **novo) {
     int operacao = 1;
     No_Aluno *anterior = NULL;
@@ -81,7 +84,11 @@ int inserir_lista_alunos(No_Aluno **R, No_Aluno **novo) {
 }
 
 
-//Tem que ter uma função de busca e retorno de endereço. Pra servir como ponto de entrada pra inserções e retiradas nas sub-arvores de matriculas e notas. 
+//
+
+//Função que busca o aluno na lista, recuperando o endereço do seu nó. 
+
+//Função utilizada por multiplos Itens(IV, V...)
 
 int buscarAlunoPorMatricula(No_Aluno *lista, int matricula_aluno, No_Aluno **aluno_encontrado) {
     int operacao = 0;  // Variável de controle, 0 para aluno não encontrado, 1 para encontrado

@@ -6,7 +6,7 @@ void menu_principal();
 void menu_cadastrar();
 void menu_exibir();
 void menu_excluir(); 
-void mensagens_tela_cadastro(int situacao); 
+ 
 
 
 
@@ -100,37 +100,48 @@ Matrícula, a lista deve ser organizada pela ordem de alfabética por nome do al
 
 
 //Funções relacionadas ao Curso
-int criarNo_Cursos(int codigo, const char *nome, int periodos, Arv_cursos **novo);  
-int inserirArvBB_Cursos(Arv_cursos **R, Arv_cursos *No); 
-void preencher_cursos(Arv_cursos **R); 
-void mensagens_exibicao_cursos(int situacao); 
-void exibir_todos_cursos(Arv_cursos *R); 
-void imprimirArvBB_Cursos(Arv_cursos *R); 
-int verificar_arv_Cursos(int codigo_curso, Arv_cursos *S, Arv_cursos **resultado);
+//Funções do Item II- Cadastrar Curso
+int criarNo_Cursos(int codigo, const char *nome, int periodos, Arv_cursos **novo); //Função que cria Nó, requisito do Item II 
+int inserirArvBB_Cursos(Arv_cursos **R, Arv_cursos *No); //Função que insere o curso na árvore de cursos
+void preencher_cursos(Arv_cursos **R); //Função de preenchimento, do Item II
+void mensagens_tela_cadastro(int situacao);//Função que exibe as mensagens sobre o status do cadastro dos cursos (Item II)
+//************************************************************ */
+void mensagens_exibicao_cursos(int situacao); //Função simples que cuida de informar o status final da operação de exibição dos cursos (Item VI)
+void exibir_todos_cursos(Arv_cursos *R); //Função do Item VII (imprimir todos os cursos)
+void imprimirArvBB_Cursos(Arv_cursos *R); //Função que percorre a árvore de cursos, imprimindo em ordem suas informações (Item VII)
+int verificar_arv_Cursos(int codigo_curso, Arv_cursos *S, Arv_cursos **resultado); //Função utilizada por múltiplos itens (I, III, IV, VI, VIII)
 
 
 //Funções relacionada a lista dos alunos 
-void preencher_alunos(No_Aluno **R, Arv_cursos **S); 
-int criarNo_Aluno(info_Aluno *temp, No_Aluno **novo);
-int inserir_lista_alunos(No_Aluno **R, No_Aluno **novo); 
-int buscarAlunoPorMatricula(No_Aluno *lista, int matricula_aluno, No_Aluno **aluno_encontrado); 
-void imprimir_alunos_do_curso(No_Aluno *lista, int codigo_curso); 
-void exibir_todos_alunos_curso(No_Aluno *raiz); 
+//****************************************************** */
+//Funções do Item I- Cadastrar aluno
+void preencher_alunos(No_Aluno **R, Arv_cursos **S); //Função de preenchimento, Item I
+int criarNo_Aluno(info_Aluno *temp, No_Aluno **novo); //Função que cria Nó, requisito do Item I
+int inserir_lista_alunos(No_Aluno **R, No_Aluno **novo); //Função que insere o Nó de aluno na Lista encadeada, requisito do item I
+void mensagens_cadastro_aluno(int situacao); //Função simples que cuida de informar o status final da operação (Se deu certo, ou se falhou, demonstrando onde a operação falhou)
+//********************************************************************* */ 
+int buscarAlunoPorMatricula(No_Aluno *lista, int matricula_aluno, No_Aluno **aluno_encontrado); //Função utilizada em multiplos itens (IV, V)
+void imprimir_alunos_do_curso(No_Aluno *lista, int codigo_curso); //Função utilizada no Item VI (imprime todos alunos do curso)
+void exibir_todos_alunos_curso(No_Aluno *raiz, Arv_cursos *R); //Função utilizada no Item VI (Lida de coletar todas as infos necessárias pra função acima)
+void mensagens_exibicao_alunos(int situacao); //Função auxiliar do Item VI, que exibe o status final da operação
 int verificar_aluno_com_disciplina(No_Aluno *lista, int codigo_curso, int codigo_disciplina); 
 
 
 
-//Funções relacionadas a árvore de Disciplinas
 
-void mensagens_cadastro_disciplina(int situacao); 
-int criarNo_Disc(Inf_Disc *temp, Arv_disc **novo);   
-int inserirArvBB_Disc(Arv_disc **disciplinas, Arv_disc *novo);
-void preencherDisciplinas(Arv_cursos **S); 
-int verificar_disciplina(Arv_disc *disciplinas, int codigo_disciplina); 
-void imprimirArvBB_Disciplinas(Arv_disc *R); 
+//Funções relacionadas a árvore de Disciplinas
+//********************************* */
+//Funções referentes ao item III- Cadastro de Disciplinas
+void mensagens_cadastro_disciplina(int situacao); //Função simples que cuida de informar o status final da operação
+int criarNo_Disc(Inf_Disc *temp, Arv_disc **novo); //Função que cria um nó com os dados de uma disciplina  
+int inserirArvBB_Disc(Arv_disc **disciplinas, Arv_disc *novo); //Função que insere o Nó na Arvore de Disciplinas, subordinada a um curso
+void preencherDisciplinas(Arv_cursos **S); //Função de preenchimento, do Item III
+/************************************************************************ */
+int verificar_disciplina(Arv_disc *disciplinas, int codigo_disciplina); //Função utilizada no Item IV(Inserir Matricula), pra verificar a existencia da disciplina naquele curso
+void imprimirArvBB_Disciplinas(Arv_disc *R); //Função utilizada no Item VIII (Exibir todas as disciplinas de determinado curso)
 void imprimirArvBB_Disciplinas_periodo_especifico(Arv_disc *R, int periodo); 
-void mensagens_exibicao_disc(int situacao); 
-void exibir_disc_do_curso(Arv_cursos **S); 
+void mensagens_exibicao_disc(int situacao); //Função auxiliar de mensagens do Item VIII
+void exibir_disc_do_curso(Arv_cursos **S); //Função utilizada no Item VIII pra coletar os dados necessários pra operação 
 void exibir_disc_periodo_especifico(Arv_cursos **S);
 void buscar_disciplina(Arv_disc *raiz, int codigo_disciplina, Arv_disc **disciplina_encontrada); 
 int menorFilho_Disc(Arv_disc *R, Arv_disc **menor); 
@@ -143,11 +154,15 @@ int armazenar_Nos_Arv_Disc(Arv_disc *R, Arv_disc ***vetor, int *tamanho);
 
 //Funções relacionadas a árvore de Matriculas 
 
-int criarNo_Mat(int codigo_disciplina, Arv_Mat_Disc **novo); 
-int inserirArvBB_Mat(Arv_Mat_Disc **matriculas, Arv_Mat_Disc *nova_matricula);
-void preencher_matriculas(No_Aluno **raiz, Arv_cursos *S);  
-int menorFilho(Arv_Mat_Disc *R, Arv_Mat_Disc **menor); 
-int removeArvBB_Matriculas(Arv_Mat_Disc **R, int codigo_disciplina); 
+//********************************* */
+//Funções referentes ao item IV- Cadastro de Matriculas
+int criarNo_Mat(int codigo_disciplina, Arv_Mat_Disc **novo); //Função de criar Nó pra árvore de matriculas
+int inserirArvBB_Mat(Arv_Mat_Disc **matriculas, Arv_Mat_Disc *nova_matricula); //Função de inserir o nó na árvore de Matricula
+void preencher_matriculas(No_Aluno **raiz, Arv_cursos *S); //Função de preenchimento do Item IV
+void mensagens_cadastro_matricula(int situacao);//Função simples que imprime mensagens de status após a operação
+/**************************************** */
+int menorFilho(Arv_Mat_Disc *R, Arv_Mat_Disc **menor); //Função auxiliar da remoção, utilizada nos itens (V, )
+int removeArvBB_Matriculas(Arv_Mat_Disc **R, int codigo_disciplina); //Função de remoção do Nó da árvore de Matriculas, utilizada nos itens (V, )
 void mensagens_exclusao_matriculas(int situacao);
 void remover_Matricula(No_Aluno **raiz);  
 void exibir_disciplinas_matriculadas(Arv_Mat_Disc *raiz, Arv_disc *disciplinas); 
@@ -156,12 +171,17 @@ void mensagens_exibir_todas_disc_aluno(int situacao);
 int verificar_matricula_ARVMatricula(int codigo_disciplina, Arv_Mat_Disc *R); 
 
 
+
+
 //Funções relacionadas a árvore de Notas
 
-void mensagens_cadastro_notas(int situacao); 
-int criarNo_Notas(Info_Notas temp, Arv_Not **novo); 
-int inserirArvBB_Notas(Arv_Not **notas, Arv_Not *novo); 
-void preencher_notas(No_Aluno **raiz); 
+//******************************************** */
+//Funções referentes ao Item V (Inserir Notas)
+void mensagens_cadastro_notas(int situacao); //Função de mensagens da operação de inserção de notas
+int criarNo_Notas(Info_Notas temp, Arv_Not **novo); //Função que cria o Nó na árvore de Notas
+int inserirArvBB_Notas(Arv_Not **notas, Arv_Not *novo); //Função que insere o Nó na árvore de Notas
+void preencher_notas(No_Aluno **raiz); //Função de preenchimento, do item V
+/**************************************************************************** */
 void imprimir_notas_aluno_periodo(Arv_Not *notas, int periodo);
 void mensagens_busca_notas_periodo(int situacao);
 void exibir_notas_periodo(No_Aluno **raiz); 
