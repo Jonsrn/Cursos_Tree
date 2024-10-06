@@ -19,19 +19,31 @@ int main(){
                 scanf("%d", &op2); 
                 switch(op2){
                    case 1: 
+                      /*Item I - Cadastrar alunos a qualquer momento na lista, de forma que só possa cadastrar um 
+                      código de curso que já tenha sido cadastrado na árvore de cursos.                       
+                      */ 
+                      //Essa é a primeira função, serve pra coletar os dados necessários para o cadastro dos alunos e cuida das devidas mensagens. 
                       preencher_alunos(&lista_alunos, &cursos); 
                       break; 
                    case 2: 
                       //cadastrar curso
+                      /*
+                      Item II- Cadastrar Cursos, insere os cursos na árvore de Cursos
+                      */
                       preencher_cursos(&cursos); 
                       break;
                    case 3: 
+                      /*
+                        Função referente ao Item III- Cadastrar Disciplinas
+                      */
                       preencherDisciplinas(&cursos); 
                       break;
                    case 4: 
+                      //Função referente ao Item IV- Cadastrar Matriculas
                       preencher_matriculas(&lista_alunos, cursos); 
                       break; 
                    case 5: 
+                      //Função referente ao Item V- Cadastrar Notas
                       preencher_notas(&lista_alunos);
                       break;      
                    default: 
@@ -59,12 +71,13 @@ int main(){
                 // Você pode adicionar lógica adicional aqui
                 switch(op3){
                     case 1: 
-                        exibir_todos_alunos_curso(lista_alunos); 
+                        //Função referente ao Item VI- (Exibir todos os alunos daquele curso)
+                        exibir_todos_alunos_curso(lista_alunos, cursos); 
                         //exbir todos os alunos cadastrados naquele curso 
                         break; 
                     case 2: 
-                        exibir_todos_cursos(cursos);  
-                        //Tem que ter uma ponte aqui, estou chamando a função diretamente
+                        //Função referente ao Item VII (Exibir todos os Cursos)
+                        exibir_todos_cursos(cursos);                          
                         break;
                     case 3: 
                         exibir_disc_do_curso(&cursos); 
