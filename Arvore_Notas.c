@@ -5,6 +5,7 @@
 
 
 //Função de criar o Nó de Notas
+//Essa função é referente ao item V (Inserir Notas)
 
 int criarNo_Notas(Info_Notas temp, Arv_Not **novo){
     *novo = (Arv_Not*)malloc(sizeof(Arv_Not)); 
@@ -21,7 +22,8 @@ int criarNo_Notas(Info_Notas temp, Arv_Not **novo){
     }  
     return operacao; 
 }
-
+//Essa função insere o nó criado na árvore de Notas
+//Essa função é referente ao item V (Inserir Notas)
 int inserirArvBB_Notas(Arv_Not **notas, Arv_Not *novo){
     int operacao = 1; 
 
