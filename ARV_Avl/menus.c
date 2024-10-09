@@ -620,7 +620,7 @@ void exibir_todos_cursos(Arv_cursos *R){
 
 Passo 1- A função "verificar_arv_Cursos" vai verificar se o curso existe, recuperando o endereço de seu nó caso o encontre
 Passo 2- A função "imprimirArvBB_Disciplinas", percorre a arvore de disciplinas, subordinada ao nó de cursos, imprimindo suas disciplinas; 
-Passo 3- A função "mensagens_exibicao_disc", pra exibir o status final da operação 
+
 
 
 */

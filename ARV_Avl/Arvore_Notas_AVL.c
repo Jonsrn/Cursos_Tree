@@ -17,11 +17,124 @@ int criarNo_Notas(Info_Notas temp, Arv_Not **novo){
         (*novo)->info.semestre_cursado = temp.semestre_cursado; 
         (*novo)->esq = NULL; 
         (*novo)->dir = NULL; 
+        (*novo)->altura = 0; 
     }else{
         operacao = 0; 
     }  
     return operacao; 
 }
+
+//Precisa de uma função pra altura 
+
+int altura_Notas(Arv_Not *R) {
+    int valor; 
+    if (R == NULL) {
+        valor = -1; //caso o nó seja nulo, o valor será -1
+    }else{
+        valor = R->altura; //caso não, o valor será atualizado de acordo com o valor armazenadado
+    }
+
+    return valor;  // o valor retorna
+}
+
+
+//Uma função pra atualizar a altura 
+
+void atualizarAltura_Notas(Arv_Not *R) {
+    int valor, esq, dir; 
+    if (R != NULL) {
+        esq = altura_Notas(R->esq); 
+        dir = altura_Notas(R->dir); 
+        if(esq > dir){
+            valor = 1 + esq; 
+        }else{
+            valor = 1 + dir; 
+        }
+
+        R->altura = valor;
+    }
+}
+
+
+
+//Função Rotação Direita
+
+void rotacaoDir_Notas(Arv_Not **R) {
+    // O filho esquerdo de R vai subir e se tornar a nova raiz
+    Arv_Not *novo_R = (*R)->esq;
+
+    // O filho direito de novo_R se torna o filho esquerdo de R
+    (*R)->esq = novo_R->dir;
+
+    // novo_R se torna a nova raiz e R desce para a direita de novo_R
+    novo_R->dir = *R;
+
+    // Atualizar a altura de R e novo_R
+    atualizarAltura_Notas(*R);
+    atualizarAltura_Notas(novo_R);
+
+    // Atualizar o ponteiro original R para apontar para o novo nó raiz
+    *R = novo_R;
+}
+
+
+//Função Rotação Esquerda
+
+void rotacaoEsq_Notas(Arv_Not **R) {
+    // O filho direito de R vai subir e se tornar a nova raiz
+    Arv_Not *novo_R = (*R)->dir;
+
+    // O filho esquerdo de novo_R se torna o filho direito de R
+    (*R)->dir = novo_R->esq;
+
+    // novo_R se torna a nova raiz e R desce para a esquerda de novo_R
+    novo_R->esq = *R;
+
+    // Atualizar a altura de R e novo_R
+    atualizarAltura_Notas(*R);
+    atualizarAltura_Notas(novo_R);
+
+    // Atualizar o ponteiro original R para apontar para o novo nó raiz
+    *R = novo_R;
+}
+
+
+
+//fator_balanceamento
+
+int fatorBalanceamento_Notas(Arv_Not *R) {
+    int valor, esq, dir; 
+    if (R == NULL) {
+        valor = 0;
+    }else{
+        esq = altura_Notas(R->esq); 
+        dir = altura_Notas(R->dir); 
+        valor = esq - dir; 
+    }
+    
+    return valor;
+}
+
+
+//Função de balanceamento
+void balanceamento_ArvAVL_Notas(Arv_Not **R){
+    int fb; 
+    fb = fatorBalanceamento_Notas(*R);
+    if(fb == -2){
+        if(fatorBalanceamento_Notas((*R)->dir) > 0){
+            rotacaoDir_Notas(&((*R)->dir)); 
+        }
+        rotacaoEsq_Notas(R); 
+    }else if(fb == 2){
+        if(fatorBalanceamento_Notas((*R)->esq) < 0){
+            rotacaoEsq_Notas(&((*R)->esq));
+        }
+        rotacaoDir_Notas(R); 
+    }
+}
+
+
+
 //Essa função insere o nó criado na árvore de Notas
 //Essa função é referente ao item V (Inserir Notas)
 int inserirArvBB_Notas(Arv_Not **notas, Arv_Not *novo){
@@ -41,8 +154,22 @@ int inserirArvBB_Notas(Arv_Not **notas, Arv_Not *novo){
         }
     }
 
+    atualizarAltura_Notas(*notas); //Função que serve
+
+
+    balanceamento_ArvAVL_Notas(notas);
+
+
+
     return operacao; 
 }
+
+
+
+
+
+
+
 
 
 //Essa função serve pra percorrer a árvore de Notas do aluno 
