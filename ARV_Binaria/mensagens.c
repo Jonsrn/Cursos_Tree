@@ -239,6 +239,9 @@ void mensagens_nota_disciplina_especifica(int situacao){
     if(situacao == 3){
         printf("\nNão há notas registradas para esse aluno\n"); 
     }
+    if (situacao == 4){
+        printf("\nA nota buscada não foi encontrada\n"); 
+    }
 }
 
 void mensagens_historico_aluno(int situacao){
