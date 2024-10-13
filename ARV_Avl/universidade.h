@@ -6,7 +6,11 @@ void menu_principal();
 void menu_cadastrar();
 void menu_exibir();
 void menu_excluir(); 
- 
+void menu_testes(); //Adicionado agora, para Testes
+void teste_cursos(); 
+void menu_insercao(); 
+void menu_medicao_cursos(); 
+void menu_medicao_nota();
 
 
 
@@ -248,7 +252,7 @@ void preencher_notas(No_Aluno **raiz); //Função de preenchimento, do item V
 void imprimir_notas_aluno_periodo(Arv_Not *notas, int periodo);
 void mensagens_busca_notas_periodo(int situacao);
 void exibir_notas_periodo(No_Aluno **raiz); 
-void imprimir_nota_aluno_materia_especifica(Arv_Not *notas, int codigo_disciplina); 
+int imprimir_nota_aluno_materia_especifica(Arv_Not *notas, int codigo_disciplina, int opcao);
 void mensagens_nota_disciplina_especifica(int situacao);
 void mostrar_nota_disciplina(No_Aluno **raiz); 
 int armazenar_Nos_Arv_Notas(Arv_Not *R, Arv_Not ***vetor, int *tamanho); 
@@ -263,6 +267,27 @@ void rotacaoEsq_Notas(Arv_Not **R); //Função pra fazer a rotação pra esquerd
 void rotacaoDir_Notas(Arv_Not **R); //Função pra fazer a rotação pra direita
 void atualizarAltura_Notas(Arv_Not *R); //Função que atualiza a altura do Nó da árvore de Notas
 int altura_Notas(Arv_Not *R); //Calcula a altura do Nó
+
+
+
+//Funções relacionadas aos testes
+
+//Teste 1 Medir o tempo de inserção de curso
+void inicializar_excluidos(int *excluidos, const char **nomes); // Inicializa os cursos excluídos e seus nomes
+void teste_insercao_cursos(const char *arquivo, Arv_cursos **R, int qtdCursos, int *excluidos, int qtdExcluidos); 
+void medir_tempo_insercao_cursos(Arv_cursos **R, int *codigos, const char **nomes, int qtdade_periodos, const char *arquivo_saida); 
+void executar_testes_insercao(Arv_cursos **arvore, int opcao); 
+
+//Teste 2 Medir o Tempo de busca de uma nota de um aluno
+
+void preencher_unico_curso(Arv_cursos **R); 
+void preencher_arv_disciplinas_curso(Arv_cursos *R); 
+void preencher_5000_alunos(No_Aluno **lista_alunos); 
+void embaralhar(int *array, int n); 
+void matricular_e_registrar_notas(No_Aluno *lista_alunos, Arv_cursos *cursos); 
+void medir_tempo_busca_nota_nanosegundos(No_Aluno *lista_alunos, int matricula, int codigo_disciplina, const char *arquivo_tempos); 
+void executar_testes_busca_nanosegundos(No_Aluno *lista_alunos); 
+void teste_de_busca(Arv_cursos **Raiz, No_Aluno **Lista); 
 
 
 
