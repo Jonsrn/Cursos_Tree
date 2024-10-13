@@ -3,7 +3,7 @@
 #include "universidade.h"
 
 int main(){
-    int op1, op2, op3, op4;
+    int op1, op2, op3, op4, op5, op6, op7, op8;
     Arv_cursos *cursos;  
     cursos = NULL; 
     No_Aluno *lista_alunos; 
@@ -68,7 +68,6 @@ int main(){
             do{
                 menu_exibir();
                 scanf("%d", &op3); 
-                // Você pode adicionar lógica adicional aqui
                 switch(op3){
                     case 1: 
                         //Função referente ao Item VI- (Exibir todos os alunos daquele curso)
@@ -122,7 +121,86 @@ int main(){
                 }   
             }while(op4 != 0); 
 
-            break;        
+            break; 
+
+        case 4: 
+    do {
+        // Aqui é o menu principal dos testes
+        menu_testes(); 
+        scanf("%d", &op5); 
+        switch(op5) {
+            case 1:
+                do {
+                    // Etapas do teste inserção ou medição
+                    teste_cursos(); 
+                    scanf("%d", &op6); 
+                    switch(op6) {
+                        case 1: 
+                            // Inserção  
+                            do {
+                                menu_insercao(); 
+                                scanf("%d", &op7); 
+
+                                switch(op7) {
+                                    case 1: 
+                                        // Inserir Ordenado crescente
+                                        //teste_insercao_cursos("cursos_ordenados.txt", &cursos, 25000);
+                                        executar_testes_insercao(&cursos, 1);
+                                        break; 
+
+                                    case 2: 
+                                        // Inserir Ordenado Decrescente
+                                        //teste_insercao_cursos("cursos_decrescentes.txt", &cursos, 25000);
+                                        executar_testes_insercao(&cursos, 2); 
+                                        break; 
+
+                                    case 3: 
+                                        // Inserir aleatório
+                                        //teste_insercao_cursos("cursos_aleatorios.txt", &cursos, 25000);
+                                        executar_testes_insercao(&cursos, 3);
+                                        break;
+
+                                    default:
+                                        if (op7 != 0)
+                                            printf("Opção inválida!\n");
+                                        break;
+                                }
+                            } while(op7 != 0); 
+                            break;
+
+                        default:
+                            if (op6 != 0)
+                                printf("Opção inválida!\n");
+                            break;
+                    }
+                } while(op6 != 0); 
+                break;
+            case 2: 
+                //Teste de busca
+                do{
+                   menu_medicao_nota();
+                   scanf("%d", &op8); 
+
+                   switch(op8){
+                        case 1: 
+                           teste_de_busca(&cursos, &lista_alunos); 
+                           break; 
+                        default:
+                           if(op8 != 0){
+                               printf("Opção Inválida\n"); 
+                           }   
+                           
+                   }   
+
+                }while(op8 != 0);   
+
+            default:
+                if (op5 != 0)
+                    printf("Opção inválida!\n");
+                break;
+        }
+    } while(op5 != 0);     
+    break;        
         
         default:
             if (op1 != 0)
