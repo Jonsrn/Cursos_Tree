@@ -41,9 +41,37 @@ void menu_exibir(){
 
 void menu_excluir(){
     printf("\nMenu Remover\n"); 
-    printf("1- Remover uma Disciplina de um Determinado Curso\n");
-    printf("2- Remover uma disciplina da árvore de matrícula de um determinado aluno.\n"); 
+    printf("1- Remover uma Disciplina de um Determinado Curso.");
+    printf("2- Remover uma disciplina da árvore de matrícula de um determinado aluno."); 
     printf("0- Sair\n");  
+}
+
+void menu_testes(){
+    printf("\nMenu Testes"); 
+    printf("\n1-Teste de inserção na árvore de Cursos"); 
+    printf("\n2-Teste de Busca de Nota de aluno");
+    printf("\n0-Sair\n");  
+}
+void teste_cursos(){
+    printf("\nExecução do Teste"); 
+    printf("\n1-Inserir e Testar");
+    printf("\n0-Sair\n"); 
+}
+void menu_insercao(){
+    printf("\nInserção de Cursos e Teste"); 
+    printf("\n1-Inserir Ordenado Crescente e na sequência Testar");
+    printf("\n2-Inserir Ordenado Decrescente e na Sequência Testar"); 
+    printf("\n3-Inserir Ordem Aleatória e na Sequencia Testar"); 
+    printf("\n0-Sair\n");  
+}
+void menu_medicao_cursos(){
+    printf("\nMedição Curso");  
+    printf("\n0-Sair\n"); 
+}
+void menu_medicao_nota(){
+   printf("\nMedição Nota");
+   printf("\n1-Medir Tempo de consulta na árvore de Notas");
+   printf("\n0-Sair\n");  
 }
 
 
@@ -832,7 +860,7 @@ void exibir_notas_periodo(No_Aluno **raiz){
 
 }
 
-// Mostrar a nota de uma disciplina de um determinado aluno, mostrando o período e a carga horária da disciplina. 
+// Mostrar a nota de uma disciplina de um determinado aluno, mostrando o período e a carga horária da disciplina. Item XII
 
 void mostrar_nota_disciplina(No_Aluno **raiz){
     //primeiramente, verificar se a lista não é nula, se for nula, não tem alunos, não há o que fazer
@@ -859,7 +887,11 @@ void mostrar_nota_disciplina(No_Aluno **raiz){
                 scanf("%d", &codigo_disciplina); 
 
                 //vou só imprimir por enquanto, depois colocar uma mensagem, caso não tenha nenhuma matéria 
-                imprimir_nota_aluno_materia_especifica(aluno_encontrado->aluno.notas, codigo_disciplina);  
+                operacao = imprimir_nota_aluno_materia_especifica(aluno_encontrado->aluno.notas, codigo_disciplina, 1);  
+                if(operacao != 1){
+                    //A nota não foi encontrada
+                    situacao = 4; 
+                }
 
 
             }else{
