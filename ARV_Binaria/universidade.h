@@ -215,7 +215,7 @@ void preencher_5000_alunos(No_Aluno **lista_alunos);
 void embaralhar(int *array, int n); 
 void matricular_e_registrar_notas(No_Aluno *lista_alunos, Arv_cursos *cursos); 
 void medir_tempo_busca_nota_nanosegundos(No_Aluno *lista_alunos, int matricula, int codigo_disciplina, const char *arquivo_tempos); 
-void executar_testes_busca_nanosegundos(No_Aluno *lista_alunos); 
+void executar_testes_busca_nanosegundos(No_Aluno *lista_alunos, int matricula, int codigo_disciplina); 
 void teste_de_busca(Arv_cursos **Raiz, No_Aluno **Lista); 
 
 
