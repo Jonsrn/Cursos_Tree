@@ -245,10 +245,10 @@ void matricular_e_registrar_notas(No_Aluno *lista_alunos, Arv_cursos *cursos) {
 void medir_tempo_busca_nota_nanosegundos(No_Aluno *lista_alunos, int matricula, int codigo_disciplina, const char *arquivo_tempos) {
     No_Aluno *aluno_encontrado = NULL;
 
-    // Arquivos de saída
+    // Arquivo de saída
     FILE *file_tempos = fopen(arquivo_tempos, "w");
     if (file_tempos == NULL) {
-        printf("Erro ao abrir os arquivos de saída!\n");
+        printf("Erro ao abrir o arquivo %s\n", arquivo_tempos);
         return;
     }
 
@@ -256,11 +256,11 @@ void medir_tempo_busca_nota_nanosegundos(No_Aluno *lista_alunos, int matricula, 
     LARGE_INTEGER frequency, start, end;
     QueryPerformanceFrequency(&frequency);
 
-    double tempos[NUM_TESTES];
+    double tempos[30];
     double total_tempo = 0;
 
-    // Executar o teste 10 vezes para registrar os tempos de busca
-    for (int i = 0; i < NUM_TESTES; i++) {
+    // Executar o teste 30 vezes para registrar os tempos de busca
+    for (int i = 0; i < 30; i++) {
         // Capturando o tempo antes da busca
         QueryPerformanceCounter(&start);
 
@@ -282,27 +282,20 @@ void medir_tempo_busca_nota_nanosegundos(No_Aluno *lista_alunos, int matricula, 
     }
 
     // Calculando a média dos tempos
-    double media_tempo = total_tempo / NUM_TESTES;
+    double media_tempo = total_tempo / 30;
 
     // Escrevendo a média no arquivo
     fprintf(file_tempos, "Média de tempo de busca: %.6f nanosegundos\n", media_tempo);
 
-    // Fechando os arquivos
+    // Fechando o arquivo
     fclose(file_tempos);
 }
 
 // Função para executar os testes de busca e gravação dos tempos
-void executar_testes_busca_nanosegundos(No_Aluno *lista_alunos) {
-    int matriculas[10] = {10001, 10005, 10010, 10050, 10100, 10200, 10300, 10400, 10500, 10600}; // 10 alunos
-    int disciplinas[5] = {1, 10, 20, 30, 50}; // Testar em 5 disciplinas diferentes
-
-    // Executar a medição de tempo para cada aluno e disciplina
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 5; j++) {
-            medir_tempo_busca_nota_nanosegundos(lista_alunos, matriculas[i], disciplinas[j], "resultados_tempo_busca.txt");
-        }
-    }
+void executar_testes_busca_nanosegundos(No_Aluno *lista_alunos, int matricula, int codigo_disciplina) {
+     medir_tempo_busca_nota_nanosegundos(lista_alunos, matricula, codigo_disciplina, "resultados_tempo_busca.txt");
 }
+
 
 void teste_de_busca(Arv_cursos **Raiz, No_Aluno **Lista){
     preencher_unico_curso(Raiz); //Vai inserir o unico curso
@@ -313,6 +306,6 @@ void teste_de_busca(Arv_cursos **Raiz, No_Aluno **Lista){
 
     matricular_e_registrar_notas(*Lista, *Raiz); 
 
-    executar_testes_busca_nanosegundos(*Lista); 
+    executar_testes_busca_nanosegundos(*Lista, 10001, 1);
 
 }
