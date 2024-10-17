@@ -99,24 +99,24 @@ void imprimir_notas_aluno_periodo(Arv_Not *notas, int periodo){
 }
 
 //imprimir a nota do aluno baseada no codigo da disciplina
-int imprimir_nota_aluno_materia_especifica(Arv_Not *notas, int codigo_disciplina, int opcao) {
+int imprimir_nota_aluno_materia_especifica(Arv_Not *notas, int codigo_disciplina,Arv_disc *disciplina, int opcao) {
     int operacao = 0;
 
     if (notas != NULL) {
         // Verificar na subárvore esquerda
-        operacao = imprimir_nota_aluno_materia_especifica(notas->esq, codigo_disciplina, opcao);
+        operacao = imprimir_nota_aluno_materia_especifica(notas->esq, codigo_disciplina, disciplina, opcao);
 
         // Se a nota foi encontrada na subárvore esquerda, não é necessário continuar
         if (operacao == 0 && notas->info.codigo_disciplina == codigo_disciplina) {
             if (opcao == 1) {
-                printf("\nCodigo da Disciplina: %d\nNota Final: %.2f\nPeriodo Cursado: %d\n", notas->info.codigo_disciplina, notas->info.nota_final, notas->info.semestre_cursado);
+                printf("\nNome da Disciplina: %s\nCodigo da Disciplina: %d\nNota Final: %.2f\nPeriodo Cursado: %d\n Carga Horária: %d", disciplina->info.nome_da_disciplina, notas->info.codigo_disciplina, notas->info.nota_final, notas->info.semestre_cursado, disciplina->info.carga_horaria);
             }
             operacao = 1;  // Nota encontrada
         }
 
         // Continuar a busca na subárvore direita, se ainda não encontrou
         if (operacao == 0) {
-            operacao = imprimir_nota_aluno_materia_especifica(notas->dir, codigo_disciplina, opcao);
+            operacao = imprimir_nota_aluno_materia_especifica(notas->dir, codigo_disciplina, disciplina, opcao);
         }
     }
 
