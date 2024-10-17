@@ -862,7 +862,7 @@ void exibir_notas_periodo(No_Aluno **raiz){
 
 // Mostrar a nota de uma disciplina de um determinado aluno, mostrando o período e a carga horária da disciplina. Item XII
 
-void mostrar_nota_disciplina(No_Aluno **raiz){
+void mostrar_nota_disciplina(No_Aluno **raiz, Arv_cursos **Cursos){
     //primeiramente, verificar se a lista não é nula, se for nula, não tem alunos, não há o que fazer
     int situacao, operacao, matricula_aluno, codigo_disciplina; 
     situacao = 0; 
@@ -886,12 +886,26 @@ void mostrar_nota_disciplina(No_Aluno **raiz){
                 printf("Digite o codigo da Disciplina: "); 
                 scanf("%d", &codigo_disciplina); 
 
-                //vou só imprimir por enquanto, depois colocar uma mensagem, caso não tenha nenhuma matéria 
-                operacao = imprimir_nota_aluno_materia_especifica(aluno_encontrado->aluno.notas, codigo_disciplina, 1);  
-                if(operacao != 1){
-                    //A nota não foi encontrada
-                    situacao = 4; 
-                }
+                Arv_disc *Disciplina_encontrada; 
+                Disciplina_encontrada = NULL; 
+
+                Arv_cursos *Curso_Encontrado; 
+                Curso_Encontrado = NULL; 
+
+                operacao = verificar_arv_Cursos(aluno_encontrado->aluno.codigo_curso, *Cursos, &Curso_Encontrado); 
+                //Buscar o Curso agora, pra recuperar na sequencia os dados das disciplinas
+
+                buscar_disciplina(Curso_Encontrado->info.disciplinas, codigo_disciplina, &Disciplina_encontrada); 
+
+                if(Disciplina_encontrada != NULL){
+                    //vou só imprimir por enquanto, depois colocar uma mensagem, caso não tenha nenhuma matéria 
+                    operacao = imprimir_nota_aluno_materia_especifica(aluno_encontrado->aluno.notas, codigo_disciplina, Disciplina_encontrada, 1);  
+                    if(operacao != 1){
+                        //A nota não foi encontrada
+                        situacao = 4; 
+                    }
+
+                }                
 
 
             }else{
