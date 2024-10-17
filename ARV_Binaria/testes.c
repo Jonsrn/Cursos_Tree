@@ -235,6 +235,8 @@ void matricular_e_registrar_notas(No_Aluno *lista_alunos, Arv_cursos *cursos) {
                     Arv_Not *novo_no_nota = NULL;
                     criarNo_Notas(nova_nota, &novo_no_nota);
                     inserirArvBB_Notas(&(aluno_encontrado->aluno.notas), novo_no_nota);
+                    removeArvBB_Matriculas(&(aluno_encontrado->aluno.matriculas), codigo_disciplina);
+
                 }
             }
         }
@@ -242,8 +244,12 @@ void matricular_e_registrar_notas(No_Aluno *lista_alunos, Arv_cursos *cursos) {
 }
 
 // Função para medir o tempo da busca da nota do aluno em uma disciplina específica
-void medir_tempo_busca_nota_nanosegundos(No_Aluno *lista_alunos, int matricula, int codigo_disciplina, const char *arquivo_tempos) {
+void medir_tempo_busca_nota_nanosegundos(No_Aluno *lista_alunos, Arv_cursos **Cursos, int matricula, int codigo_disciplina, const char *arquivo_tempos) {
     No_Aluno *aluno_encontrado = NULL;
+    Arv_cursos *Curso_Encontrado; 
+    Curso_Encontrado = NULL;
+    Arv_disc *Disciplina_Encontrada; 
+    Disciplina_Encontrada = NULL;
 
     // Arquivo de saída
     FILE *file_tempos = fopen(arquivo_tempos, "w");
@@ -266,7 +272,13 @@ void medir_tempo_busca_nota_nanosegundos(No_Aluno *lista_alunos, int matricula, 
 
         // Buscar o aluno e a nota da disciplina
         if (buscarAlunoPorMatricula(lista_alunos, matricula, &aluno_encontrado)) {
-            imprimir_nota_aluno_materia_especifica(aluno_encontrado->aluno.notas, codigo_disciplina, 2); // Modo 2 apenas retorna
+           
+            verificar_arv_Cursos(aluno_encontrado->aluno.codigo_curso, *Cursos, &Curso_Encontrado);
+
+            buscar_disciplina(Curso_Encontrado->info.disciplinas, codigo_disciplina, &Disciplina_Encontrada); 
+
+
+            imprimir_nota_aluno_materia_especifica(aluno_encontrado->aluno.notas, codigo_disciplina, Disciplina_Encontrada,  2); // Modo 2 apenas retorna
         }
 
         // Capturando o tempo após a busca
@@ -292,8 +304,8 @@ void medir_tempo_busca_nota_nanosegundos(No_Aluno *lista_alunos, int matricula, 
 }
 
 // Função para executar os testes de busca e gravação dos tempos
-void executar_testes_busca_nanosegundos(No_Aluno *lista_alunos, int matricula, int codigo_disciplina) {
-     medir_tempo_busca_nota_nanosegundos(lista_alunos, matricula, codigo_disciplina, "resultados_tempo_busca.txt");
+void executar_testes_busca_nanosegundos(No_Aluno *lista_alunos, Arv_cursos **cursos, int matricula, int codigo_disciplina) {
+     medir_tempo_busca_nota_nanosegundos(lista_alunos, cursos, matricula, codigo_disciplina, "resultados_tempo_busca.txt");
 }
 
 
@@ -306,6 +318,6 @@ void teste_de_busca(Arv_cursos **Raiz, No_Aluno **Lista){
 
     matricular_e_registrar_notas(*Lista, *Raiz); 
 
-    executar_testes_busca_nanosegundos(*Lista, 10001, 1);
+    executar_testes_busca_nanosegundos(*Lista, Raiz, 10001, 1);
 
 }
