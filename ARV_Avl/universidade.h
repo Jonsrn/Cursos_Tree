@@ -252,9 +252,9 @@ void preencher_notas(No_Aluno **raiz); //Função de preenchimento, do item V
 void imprimir_notas_aluno_periodo(Arv_Not *notas, int periodo);
 void mensagens_busca_notas_periodo(int situacao);
 void exibir_notas_periodo(No_Aluno **raiz); 
-int imprimir_nota_aluno_materia_especifica(Arv_Not *notas, int codigo_disciplina, int opcao);
+int imprimir_nota_aluno_materia_especifica(Arv_Not *notas, int codigo_disciplina, Arv_disc *disciplina, int opcao); 
 void mensagens_nota_disciplina_especifica(int situacao);
-void mostrar_nota_disciplina(No_Aluno **raiz); 
+void mostrar_nota_disciplina(No_Aluno **raiz, Arv_cursos **Cursos);
 int armazenar_Nos_Arv_Notas(Arv_Not *R, Arv_Not ***vetor, int *tamanho); 
 void imprimir_historico_Por_Periodo(Arv_disc **vetorDisc, int tamDisc, Arv_Not **vetorNotas, int tamNotas);   
 void ordenarDisciplinasPorPeriodo(Arv_disc **vetorDisc, int tamDisc); 
@@ -285,8 +285,8 @@ void preencher_arv_disciplinas_curso(Arv_cursos *R);
 void preencher_5000_alunos(No_Aluno **lista_alunos); 
 void embaralhar(int *array, int n); 
 void matricular_e_registrar_notas(No_Aluno *lista_alunos, Arv_cursos *cursos); 
-void medir_tempo_busca_nota_nanosegundos(No_Aluno *lista_alunos, int matricula, int codigo_disciplina, const char *arquivo_tempos); 
-void executar_testes_busca_nanosegundos(No_Aluno *lista_alunos, int matricula, int codigo_disciplina); 
+void medir_tempo_busca_nota_nanosegundos(No_Aluno *lista_alunos, Arv_cursos **Cursos, int matricula, int codigo_disciplina, const char *arquivo_tempos); 
+void executar_testes_busca_nanosegundos(No_Aluno *lista_alunos, Arv_cursos **cursos, int matricula, int codigo_disciplina); 
 void teste_de_busca(Arv_cursos **Raiz, No_Aluno **Lista); 
 
 
