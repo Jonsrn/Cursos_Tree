@@ -95,7 +95,7 @@ int main(){
                         //Essa função exibe as notas de um aluno especifico, em um periodo especifico
                         break;   
                     case 7: 
-                        mostrar_nota_disciplina(&lista_alunos); 
+                        mostrar_nota_disciplina(&lista_alunos, &cursos); 
                         //Essa função exibe as notas de um aluno especifico, de uma matéria especifica
                         break;     
                     case 8: 
