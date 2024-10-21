@@ -528,13 +528,17 @@ void preencher_notas(No_Aluno **raiz){
                             nova_matricula = NULL;
                             criarNo_Mat(codigo_disciplina, &nova_matricula);
                             inserirArvBB_Mat(&aluno_encontrado->aluno.matriculas, nova_matricula);
+                            free(novo_no); //apagando o nó criado de Notas
                             //a inserção na árvore de notas não foi feita corretamente, é necessário reverter. 
                             situacao = 6;
                         }
 
                     }else{
                         //O nó não foi criado corretamente, é necessário reverter 
-                        //usar a função de inserir(codigo_matricula); 
+                        Arv_Mat_Disc *nova_matricula;
+                        nova_matricula = NULL;
+                        criarNo_Mat(codigo_disciplina, &nova_matricula);
+                        inserirArvBB_Mat(&aluno_encontrado->aluno.matriculas, nova_matricula);
                         situacao = 5; 
                     } 
 
@@ -989,7 +993,7 @@ void mostrar_historico_aluno(Arv_cursos **raiz, No_Aluno **S){
                             if(operacao == 1){ 
                                 //Blz, já temos os dois vetores, com os nós das arvores, agr é mandar pra uma função auxiliar, de comparação, ordenação e impressão
                                 
-                                
+                                printf("Curso: %s\nAluno: %s\n", curso_encontrado->info.nome_do_curso, aluno_encontrado->aluno.nome_do_aluno);
                                 imprimir_historico_Por_Periodo(disciplinas_do_curso, tamanho_do_vetor_disc_curso, disciplinas_pagas_do_aluno, tamanho_do_vetor_notas); 
 
                                 //Libera a linkagem do vetor linear das notas do aluno, não afeta a árvore original;  
@@ -1066,34 +1070,45 @@ void remover_Matricula(No_Aluno **raiz){
     operacao = 1; 
     situacao = 0; 
 
-    printf("Digite a sua matricula: ");
-    scanf("%d", &matricula_aluno); 
+    if(*raiz != NULL){ 
+        printf("Digite a sua matricula: ");
+        scanf("%d", &matricula_aluno); 
 
-    No_Aluno *aluno_encontrado;
-    aluno_encontrado = NULL;  
+        No_Aluno *aluno_encontrado;
+        aluno_encontrado = NULL;  
 
-    // função pra verificar a lista de alunos (recuperando o endereço nó item lista)
-    // é preciso verificar se o aluno está matriculado 
-    operacao = buscarAlunoPorMatricula(*raiz, matricula_aluno, &aluno_encontrado); 
+        // função pra verificar a lista de alunos (recuperando o endereço nó item lista)
+        // é preciso verificar se o aluno está matriculado 
+        operacao = buscarAlunoPorMatricula(*raiz, matricula_aluno, &aluno_encontrado); 
 
-    if(operacao == 1){ 
-        printf("Digite o codigo da Disciplina que deseja excluir: ");
-        scanf("%d", &codigo_disciplina); 
-         
-        //a função deve então remover o item da arvore de matriculas. (guarde uma cópia desse nó)
-        operacao = removeArvBB_Matriculas(&(aluno_encontrado->aluno.matriculas),codigo_disciplina);
+        if(operacao == 1){ 
+            
+            if(aluno_encontrado->aluno.matriculas != NULL){
+                printf("Digite o codigo da Disciplina que deseja excluir: ");
+                scanf("%d", &codigo_disciplina); 
+                
+                //a função deve então remover o item da arvore de matriculas. (guarde uma cópia desse nó)
+                operacao = removeArvBB_Matriculas(&(aluno_encontrado->aluno.matriculas),codigo_disciplina);
 
-        if(operacao != 1){
+                if(operacao != 1){
+                    situacao = 4; 
+                    //Falha na remoção, possivelmente a disciplina não existe. 
+                }
+            }else{
+                situacao = 3; 
+                //Não há matriculas registradas na subárvore de alunos
+            }    
+
+
+
+        }else{
             situacao = 2; 
-            //Falha na remoção, possivelmente a disciplina não existe. 
+            //Não foi encontrado aluno com essa matricula
         }
-
-
-
     }else{
         situacao = 1; 
-        //Não foi encontrado aluno com essa matricula
-    }
+        //Não há nenhum aluno matriculado no sistema
+    }    
 
     mensagens_exclusao_matriculas(situacao); 
 
