@@ -180,11 +180,15 @@ void mensagens_exibir_todas_disc_aluno(int situacao){
 void mensagens_exclusao_matriculas(int situacao){
     if(situacao == 0){
         printf("Disciplina Excluída com sucesso\n"); 
-    }
-    if(situacao == 1){
-        printf("A operação falhou porque nenhum aluno foi encontrado"); 
+    }if(situacao == 1){
+        printf("\nA operação falhou porque não há alunos cadastrados no Sistema\n"); 
     }
     if(situacao == 2){
+        printf("\nA operação falhou porque nenhum aluno foi encontrado\n"); 
+    }if(situacao == 3){
+        printf("\nA operação falhou porque não há matriculas registradas na subárvore de alunos\n");
+    }
+    if(situacao == 4){
         printf("A operação falhou porque Nenhum curso com esse codigo foi encontrado\n"); 
     }
 } 
