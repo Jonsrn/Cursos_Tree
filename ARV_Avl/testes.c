@@ -120,16 +120,21 @@ void executar_testes_insercao(Arv_cursos **arvore, int opcao) {
 //Funções relacionadas ao Teste 2
 
 
-void preencher_unico_curso(Arv_cursos **R) {
-    // Criando o único curso
-    int codigo_curso = 1; // Código arbitrário para o curso
-    const char *nome_curso = "Engenharia";
-    int qtdade_periodos = 10; // Número de períodos para esse curso
+// Função para preencher a árvore de cursos com múltiplos cursos
+void preencher_cursos_automatico(Arv_cursos **R, int quantidade_cursos) {
+    // Loop para inserir múltiplos cursos
+    for (int i = 1; i <= quantidade_cursos; i++) {
+        int codigo_curso = i; // Código do curso
+        char nome_curso[50];
+        sprintf(nome_curso, "Curso_%d", i); // Nome do curso com base no código
+        int qtdade_periodos = 8; // Número de períodos para cada curso (pode variar se desejar)
 
-    Arv_cursos *novo_curso = NULL;
-    criarNo_Cursos(codigo_curso, nome_curso, qtdade_periodos, &novo_curso);
-    inserirArvBB_Cursos(R, novo_curso);
+        Arv_cursos *novo_curso = NULL;
+        criarNo_Cursos(codigo_curso, nome_curso, qtdade_periodos, &novo_curso);
+        inserirArvBB_Cursos(R, novo_curso);
+    }
 }
+
 
 // Função para preencher as disciplinas
 void preencher_arv_disciplinas_curso(Arv_cursos *R) {
@@ -139,15 +144,15 @@ void preencher_arv_disciplinas_curso(Arv_cursos *R) {
     }
 
     Arv_cursos *curso_encontrado = NULL;
-    verificar_arv_Cursos(1, R, &curso_encontrado); // Usando código 1, já que é o único curso
+    verificar_arv_Cursos(9999, R, &curso_encontrado); // Usando código 9999, já que é curso mais distante
 
     if (curso_encontrado == NULL) {
         printf("Curso não encontrado!\n");
         return;
     }
 
-    // Adicionar 50 disciplinas ao curso
-    for (int i = 1; i <= 50; i++) {
+    // Adicionar 2500 disciplinas ao curso
+    for (int i = 1; i <= 2500; i++) {
         char nome_disciplina[50];
         sprintf(nome_disciplina, "Disciplina_%d", i);
         
@@ -164,83 +169,70 @@ void preencher_arv_disciplinas_curso(Arv_cursos *R) {
     }
 }
 
-// Função para preencher 5000 alunos na lista encadeada
-void preencher_5000_alunos(No_Aluno **lista_alunos) {
+// Função para inserir 1 aluno na lista encadeada
+void preencher_aluno_automatico(No_Aluno **lista_alunos) {
     char nome_base[50] = "Aluno_";
     int matricula_base = 10000; // Iniciar a partir de um número arbitrário de matrícula
 
-    for (int i = 0; i < 5000; i++) {
-        info_Aluno novo_aluno;
-        novo_aluno.matricula = matricula_base + i; // Matrículas de 10000 a 14999
-        snprintf(novo_aluno.nome_do_aluno, sizeof(novo_aluno.nome_do_aluno), "%s%d", nome_base, i + 1); // Nomeando Aluno_1, Aluno_2, etc.
-        novo_aluno.codigo_curso = 1; // Todos alunos cadastrados no curso 1
-        novo_aluno.notas = NULL;
-        novo_aluno.matriculas = NULL;
+    
+    info_Aluno novo_aluno;
+    novo_aluno.matricula = matricula_base + 1; // Matricula 10001
+    snprintf(novo_aluno.nome_do_aluno, sizeof(novo_aluno.nome_do_aluno), "%s%d", nome_base, 1); // Nomeando Aluno_1.
+    novo_aluno.codigo_curso = 9999; // aluno cadastrado no curso 9999
+    novo_aluno.notas = NULL;
+    novo_aluno.matriculas = NULL;
 
-        No_Aluno *novo_no_aluno = NULL;
-        criarNo_Aluno(&novo_aluno, &novo_no_aluno);
-        inserir_lista_alunos(lista_alunos, &novo_no_aluno); // Lista organizada em ordem alfabética
-    }
+    No_Aluno *novo_no_aluno = NULL;
+    criarNo_Aluno(&novo_aluno, &novo_no_aluno);
+    inserir_lista_alunos(lista_alunos, &novo_no_aluno); // Lista organizada em ordem alfabética
+    
 }
 
 
-
-// Função para matricular alunos nas disciplinas e registrar as notas
-void embaralhar(int *array, int n) {
-    for (int i = n - 1; i > 0; i--) {
-        int j = rand() % (i + 1);
-        int temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-}
 
 void matricular_e_registrar_notas(No_Aluno *lista_alunos, Arv_cursos *cursos) {
-    int matriculas[10] = {10001, 10005, 10010, 10050, 10100, 10200, 10300, 10400, 10500, 10600}; // Selecionando 10 alunos
+    int matricula = 10001; 
     No_Aluno *aluno_encontrado = NULL;
     Arv_cursos *curso_encontrado = NULL;
-    verificar_arv_Cursos(1, cursos, &curso_encontrado); // Curso 1
+    verificar_arv_Cursos(9999, cursos, &curso_encontrado); // Curso 9999
 
     if (curso_encontrado == NULL) {
         printf("Curso não encontrado para registrar notas!\n");
         return;
     }
 
-    // Para cada aluno selecionado
-    for (int i = 0; i < 10; i++) {
-        // Buscar o aluno pela matrícula
-        if (buscarAlunoPorMatricula(lista_alunos, matriculas[i], &aluno_encontrado)) {
-            int disciplinas[50];
-            // Preencher a lista de disciplinas (1 a 50) para cada aluno
-            for (int j = 0; j < 50; j++) {
-                disciplinas[j] = j + 1;
-            }
 
-            // Embaralhar a lista de disciplinas de maneira independente para cada aluno
-            embaralhar(disciplinas, 50);
+    if (buscarAlunoPorMatricula(lista_alunos, matricula, &aluno_encontrado)) {
+        int disciplinas[2500];
+        // Preencher a lista de disciplinas
+        for (int j = 0; j < 2500; j++) {
+            disciplinas[j] = j + 1;
+        }
 
-            // Matricular o aluno e registrar as notas nas disciplinas de maneira aleatória
-            for (int j = 0; j < 50; j++) {
-                int codigo_disciplina = disciplinas[j];
 
-                // Verificar se a disciplina existe
-                if (verificar_disciplina(curso_encontrado->info.disciplinas, codigo_disciplina)) {
-                    // Criar a matrícula
-                    Arv_Mat_Disc *nova_matricula = NULL;
-                    criarNo_Mat(codigo_disciplina, &nova_matricula);
-                    inserirArvBB_Mat(&(aluno_encontrado->aluno.matriculas), nova_matricula);
+        // Matricular o aluno e registrar as notas nas disciplinas de maneira aleatória
+        for (int j = 0; j < 2500; j++) {
+            int codigo_disciplina = disciplinas[j];
 
-                    // Criar a nota após a matrícula (aleatória de 1 a 10)
-                    Info_Notas nova_nota = {.codigo_disciplina = codigo_disciplina, .nota_final = (float)(rand() % 10 + 1), .semestre_cursado = 20232};
-                    Arv_Not *novo_no_nota = NULL;
-                    criarNo_Notas(nova_nota, &novo_no_nota);
-                    inserirArvBB_Notas(&(aluno_encontrado->aluno.notas), novo_no_nota);
-                    removeArvBB_Matriculas(&(aluno_encontrado->aluno.matriculas), codigo_disciplina);
-                }
+            // Verificar se a disciplina existe
+            if (verificar_disciplina(curso_encontrado->info.disciplinas, codigo_disciplina)) {
+                // Criar a matrícula
+                Arv_Mat_Disc *nova_matricula = NULL;
+                criarNo_Mat(codigo_disciplina, &nova_matricula);
+                inserirArvBB_Mat(&(aluno_encontrado->aluno.matriculas), nova_matricula);
+
+                // Criar a nota após a matrícula (aleatória de 1 a 10)
+                Info_Notas nova_nota = {.codigo_disciplina = codigo_disciplina, .nota_final = (float)(rand() % 10 + 1), .semestre_cursado = 20232};
+                Arv_Not *novo_no_nota = NULL;
+                criarNo_Notas(nova_nota, &novo_no_nota);
+                inserirArvBB_Notas(&(aluno_encontrado->aluno.notas), novo_no_nota);
+                removeArvBB_Matriculas(&(aluno_encontrado->aluno.matriculas), codigo_disciplina);
+
             }
         }
     }
 }
+
 
 // Função para medir o tempo da busca da nota do aluno em uma disciplina específica
 void medir_tempo_busca_nota_nanosegundos(No_Aluno *lista_alunos, Arv_cursos **Cursos, int matricula, int codigo_disciplina, const char *arquivo_tempos) {
@@ -309,14 +301,14 @@ void executar_testes_busca_nanosegundos(No_Aluno *lista_alunos, Arv_cursos **cur
 
 
 void teste_de_busca(Arv_cursos **Raiz, No_Aluno **Lista){
-    preencher_unico_curso(Raiz); //Vai inserir o unico curso
+    preencher_cursos_automatico(Raiz, 10000); //Vai inserir 10000 cursos
 
     preencher_arv_disciplinas_curso(*Raiz); 
 
-    preencher_5000_alunos(Lista); 
+    preencher_aluno_automatico(Lista); 
 
     matricular_e_registrar_notas(*Lista, *Raiz); 
 
-    executar_testes_busca_nanosegundos(*Lista, Raiz, 10001, 1);
+    executar_testes_busca_nanosegundos(*Lista, Raiz, 10001, 1125);
 
 }
