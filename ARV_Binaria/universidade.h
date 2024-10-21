@@ -209,10 +209,9 @@ void executar_testes_insercao(Arv_cursos **arvore, int opcao);
 
 //Teste 2 Medir o Tempo de busca de uma nota de um aluno
 
-void preencher_unico_curso(Arv_cursos **R); 
+void preencher_cursos_automatico(Arv_cursos **R, int quantidade_cursos); 
 void preencher_arv_disciplinas_curso(Arv_cursos *R); 
-void preencher_5000_alunos(No_Aluno **lista_alunos); 
-void embaralhar(int *array, int n); 
+void preencher_aluno_automatico(No_Aluno **lista_alunos); 
 void matricular_e_registrar_notas(No_Aluno *lista_alunos, Arv_cursos *cursos); 
 void medir_tempo_busca_nota_nanosegundos(No_Aluno *lista_alunos, Arv_cursos **Cursos, int matricula, int codigo_disciplina, const char *arquivo_tempos); 
 void executar_testes_busca_nanosegundos(No_Aluno *lista_alunos, Arv_cursos **cursos, int matricula, int codigo_disciplina); 
